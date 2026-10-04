@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" href="https://i.postimg.cc/L8Kv9hMQ/Screenshot-3-10-2026-131953-script-google-com.jpg?v=2" type="image/jpeg">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Student Hub</title>
 
-<link rel="icon" type="image/jpeg" href="https://i.postimg.cc/L8Kv9hMQ/Screenshot-3-10-2026-131953-script-google-com.jpg">
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -16,446 +17,436 @@
     padding: 0;
 }
 
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
 body {
-    min-height: 100vh;
-    color: #f3eee7;
+    background: #050713;
+    perspective: 1000px;
+    color: #fff;
     font-family: 'Manrope', sans-serif;
-    background:
-        radial-gradient(ellipse at 50% 8%, rgba(125, 103, 78, 0.20), transparent 38%),
-        radial-gradient(ellipse at 10% 85%, rgba(100, 100, 100, 0.12), transparent 35%),
-        #050505;
-    background-attachment: fixed;
     overflow-x: hidden;
 }
 
-/* INTRO SCREEN */
-.intro-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background:
-        radial-gradient(ellipse at 50% 45%, rgba(110, 90, 65, 0.15), transparent 45%),
-        #050505;
-    cursor: pointer;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 1.2s ease, visibility 1.2s ease;
-}
+/* =========================
+   ANIMATED BACKGROUND SYSTEM
+========================= */
+.background{position:fixed;inset:0;z-index:-10;overflow:hidden;isolation:isolate;background:#030612;transition:background 1s ease}
+.background:before{content:"";position:absolute;inset:-45%;background:radial-gradient(ellipse at 50% 48%,rgba(255,255,255,.72) 0%,rgba(165,190,255,.36) 7%,rgba(112,92,220,.24) 18%,rgba(35,72,150,.18) 29%,transparent 53%),radial-gradient(ellipse at 30% 55%,rgba(255,150,210,.18),transparent 40%),radial-gradient(ellipse at 70% 35%,rgba(75,205,255,.18),transparent 42%);filter:blur(24px);transform:rotate(-24deg);animation:milkyway 38s ease-in-out infinite alternate;pointer-events:none}
+.background:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(116,205,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(116,205,255,.055) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(to bottom,transparent,black 40%,black);animation:gridFloat 22s linear infinite;pointer-events:none}
+.starfield{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 22%,#fff,transparent),radial-gradient(1px 1px at 27% 71%,#d9e8ff,transparent),radial-gradient(2px 2px at 74% 18%,#fff,transparent),radial-gradient(1px 1px at 86% 62%,#fff,transparent),radial-gradient(1px 1px at 52% 38%,#d5caff,transparent),radial-gradient(2px 2px at 42% 86%,#fff,transparent);background-size:390px 310px;opacity:.8;animation:starDrift 75s linear infinite}
+body[data-theme="aurora"] .background:before{background:radial-gradient(ellipse at 30% 60%,rgba(0,255,190,.34),transparent 38%),radial-gradient(ellipse at 70% 30%,rgba(80,100,255,.38),transparent 42%),radial-gradient(ellipse at 55% 70%,rgba(190,70,255,.22),transparent 42%);transform:rotate(-15deg)}
+body[data-theme="sunset"] .background:before{background:radial-gradient(ellipse at 50% 70%,rgba(255,95,75,.42),transparent 40%),radial-gradient(ellipse at 25% 35%,rgba(255,165,65,.3),transparent 38%),radial-gradient(ellipse at 75% 30%,rgba(185,65,180,.3),transparent 42%);transform:rotate(10deg)}
+body[data-theme="matrix"] .background:before{background:radial-gradient(ellipse at 50% 45%,rgba(0,255,100,.28),transparent 48%),radial-gradient(ellipse at 20% 80%,rgba(0,160,80,.18),transparent 40%);transform:rotate(0)}
+@keyframes milkyway{0%{transform:translate(-3%,2%) rotate(-27deg) scale(1)}100%{transform:translate(4%,-3%) rotate(-17deg) scale(1.16)}}
+@keyframes starDrift{from{transform:translateY(0)}to{transform:translateY(-310px)}}
+@keyframes gridFloat{from{transform:translateY(0)}to{transform:translateY(58px)}}
+@keyframes stars{from{transform:translateY(0)}to{transform:translateY(-120px)}}
+@keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 7px rgba(76,213,255,.25))}50%{filter:drop-shadow(0 0 22px rgba(190,83,255,.6))}}
+@keyframes riseIn{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-.intro-screen.fade-out {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
+/* =========================
+   CITY
+========================= */
 
-.intro-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(42px, 8vw, 78px);
-    font-weight: 300;
-    letter-spacing: 5px;
-    color: #f3eee7;
-    text-shadow: 0 0 30px rgba(235, 220, 195, 0.18);
-    margin-bottom: 22px;
-}
-
-.intro-line {
-    width: 55px;
-    height: 1px;
-    background: #a9977b;
-    margin: 8px 0 25px;
-    opacity: 0.7;
-}
-
-.intro-subtitle {
-    font-size: 12px;
-    letter-spacing: 5px;
-    color: #a69b8c;
-    text-transform: uppercase;
-    animation: breathe 2.5s ease-in-out infinite;
-}
-
-.intro-hint {
-    margin-top: 45px;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #82796e;
-    line-height: 2;
-}
-
-.intro-hint strong {
-    color: #d2bd9d;
-    font-weight: 500;
-}
-
-@keyframes breathe {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-/* NIGHT LIGHTING */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.025), transparent 35%),
-        radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.62) 100%);
-    z-index: -1;
-}
-
-/* MODERN CITY BACKGROUND */
 .city {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 38vh;
-    min-height: 220px;
+    height: 40%;
     display: flex;
     align-items: flex-end;
-    justify-content: space-around;
-    gap: 3px;
-    opacity: 0.55;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    gap: 5px;
+    opacity: .58;
+    filter: drop-shadow(0 0 18px rgba(80,190,255,.28));
 }
 
 .building {
     position: relative;
-    flex: 1;
-    max-width: 115px;
-    min-width: 22px;
-    background: linear-gradient(180deg, #242321, #101010 85%);
-    border: 1px solid rgba(190, 175, 150, 0.12);
-    border-bottom: none;
-    box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
+    width: clamp(25px, 5vw, 75px);
+    background: linear-gradient(to top, #050505, #191919);
+    border-top: 1px solid rgba(255,255,255,.08);
 }
 
 .building::before {
     content: "";
     position: absolute;
-    inset: 12px 7px 8px;
-    background-image:
+    inset: 12px 7px;
+    background:
         repeating-linear-gradient(
-            90deg,
-            transparent 0 9px,
-            rgba(209, 174, 113, 0.55) 10px 12px,
-            transparent 13px 21px
-        ),
-        repeating-linear-gradient(
-            0deg,
-            transparent 0 13px,
-            rgba(209, 174, 113, 0.45) 14px 17px,
-            transparent 18px 28px
+            to bottom,
+            rgba(255,255,255,.15) 0px,
+            rgba(255,255,255,.15) 2px,
+            transparent 2px,
+            transparent 13px
         );
-    opacity: 0.5;
+    opacity: .35;
 }
 
-.building:nth-child(1) { height: 38%; }
-.building:nth-child(2) { height: 65%; }
-.building:nth-child(3) { height: 48%; }
-.building:nth-child(4) { height: 82%; }
-.building:nth-child(5) { height: 55%; }
-.building:nth-child(6) { height: 95%; }
-.building:nth-child(7) { height: 68%; }
-.building:nth-child(8) { height: 43%; }
-.building:nth-child(9) { height: 76%; }
-.building:nth-child(10) { height: 53%; }
-.building:nth-child(11) { height: 88%; }
-.building:nth-child(12) { height: 47%; }
-.building:nth-child(13) { height: 62%; }
-.building:nth-child(14) { height: 36%; }
+.b1 { height: 45%; }
+.b2 { height: 65%; }
+.b3 { height: 35%; }
+.b4 { height: 78%; }
+.b5 { height: 53%; }
+.b6 { height: 90%; }
+.b7 { height: 48%; }
+.b8 { height: 72%; }
+.b9 { height: 42%; }
+.b10 { height: 62%; }
+.b11 { height: 83%; }
+.b12 { height: 50%; }
+.b13 { height: 68%; }
+.b14 { height: 38%; }
+.b15 { height: 76%; }
+.b16 { height: 57%; }
+.b17 { height: 88%; }
+.b18 { height: 45%; }
 
-.building.tall {
-    max-width: 75px;
-}
+/* LOADING / WELCOME SCREEN */
+#intro{background:radial-gradient(ellipse at center,rgba(12,25,60,.88),#02040c 72%)}
+#intro:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(130,190,255,.12),transparent 65%);transform:translateX(-100%);animation:scan 3s ease-in-out infinite}
+@keyframes scan{to{transform:translateX(100%)}}
+.loader-orbit{width:110px;height:110px;border:1px solid rgba(160,210,255,.25);border-radius:50%;margin:0 auto 28px;position:relative;box-shadow:0 0 35px rgba(95,150,255,.2),inset 0 0 25px rgba(95,150,255,.12);animation:orbitPulse 2.5s ease-in-out infinite}
+.loader-orbit:before,.loader-orbit:after{content:"";position:absolute;inset:12px;border:2px solid transparent;border-top-color:#8cecff;border-right-color:#a68cff;border-radius:50%;animation:spin 2s linear infinite}
+.loader-orbit:after{inset:25px;border-top-color:#ff9bdc;border-right-color:transparent;animation-duration:1.4s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes orbitPulse{50%{transform:scale(1.08);box-shadow:0 0 55px rgba(95,150,255,.42)}}
+.loading-label{font-size:10px;letter-spacing:5px;color:#b9d5ff;margin-top:18px}
+.loading-track{width:min(270px,70vw);height:3px;background:rgba(255,255,255,.12);border-radius:9px;margin:15px auto 0;overflow:hidden}
+.loading-fill{height:100%;width:0;background:linear-gradient(90deg,#5ce1ff,#a58bff,#ff8bd5);box-shadow:0 0 15px #8e9fff;animation:loadbar 2.3s ease forwards}
+@keyframes loadbar{to{width:100%}}
+.bg-picker{position:fixed;top:20px;left:20px;z-index:5001;display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:calc(100vw - 40px)}
+.bg-picker button{border:1px solid rgba(190,215,255,.28);background:rgba(5,12,30,.68);color:#fff;border-radius:999px;padding:9px 12px;font:700 9px Manrope,sans-serif;letter-spacing:1px;cursor:pointer;backdrop-filter:blur(12px)}
+.bg-picker button[aria-pressed="true"]{background:rgba(125,150,255,.3);border-color:#a9c9ff;box-shadow:0 0 18px rgba(100,160,255,.3)}
+@media(max-width:700px){.bg-picker{top:58px;left:10px;gap:5px}.bg-picker button{font-size:8px;padding:8px}.controls{top:12px;right:10px}}
 
-.building.tall::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 35px;
-    top: -35px;
-    left: 50%;
-    background: rgba(200, 180, 145, 0.35);
-}
+/* =========================
+   INTRO
+========================= */
 
-/* HEADER */
-header {
-    text-align: center;
-    padding: 65px 20px 35px;
-    position: relative;
-    z-index: 1;
-}
-
-header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(42px, 7vw, 70px);
-    font-weight: 300;
-    letter-spacing: 3px;
-    color: #f3eee7;
-    text-shadow: 0 0 25px rgba(235, 220, 195, 0.15);
-}
-
-header p {
-    margin-top: 10px;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #aaa096;
-}
-
-/* MAIN CONTAINER */
-.container {
-    width: min(1100px, 92%);
-    margin: 0 auto 70px;
-    padding: 30px;
-    position: relative;
-    z-index: 1;
-    background: rgba(13, 13, 13, 0.78);
-    border: 1px solid rgba(220, 210, 195, 0.16);
-    border-radius: 20px;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.65);
-    backdrop-filter: blur(14px);
-}
-
-.section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 400;
-    letter-spacing: 1.5px;
-    text-align: center;
-    margin-bottom: 28px;
-    color: #eee7dc;
-}
-
-/* CARDS */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-}
-
-.card {
-    min-width: 0;
-    padding: 17px;
-    text-align: center;
-    background: rgba(28, 28, 28, 0.88);
-    border: 1px solid rgba(220, 210, 195, 0.19);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    background: rgba(35, 33, 30, 0.95);
-    border-color: rgba(220, 200, 170, 0.45);
-}
-
-.card h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 27px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    margin-bottom: 14px;
-    color: #f1eae0;
-}
-
-.card img {
-    display: block;
-    width: 100%;
-    height: 175px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255,255,255,0.10);
-}
-
-.placeholder {
-    height: 175px;
+#intro {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background:
+        radial-gradient(circle at center, #202020 0%, #0b0b0b 65%, #050505 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    background:
-        linear-gradient(145deg, rgba(75,70,63,0.28), rgba(15,15,15,0.9)),
-        #191919;
-    border: 1px solid rgba(220,210,195,0.15);
-    color: #ded5c8;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 25px;
-    letter-spacing: 1px;
-}
-
-/* BUTTONS */
-button {
-    width: 100%;
-    padding: 13px 16px;
-    border-radius: 9px;
-    border: 1px solid rgba(220, 210, 195, 0.28);
-    background: #171717;
-    color: #f3eee7;
-    font-family: 'Manrope', sans-serif;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-button:hover {
-    background: #302a22;
-    border-color: #b9a88d;
-}
-
-/* MUSIC BUTTON */
-.music-control {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 10;
-    width: auto;
-    min-width: 155px;
-    padding: 12px 16px;
-    border-radius: 30px;
-    background: rgba(20, 20, 20, 0.92);
-    border: 1px solid rgba(220, 200, 170, 0.35);
-    color: #eee5d8;
-    font-family: 'Manrope', sans-serif;
-    font-size: 11px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-}
-
-.music-control:hover {
-    background: #302a22;
-    border-color: #b9a88d;
-}
-
-.music-control.playing {
-    border-color: #c6aa7b;
-    color: #e8c99a;
-}
-
-/* MENUS */
-.menu {
-    display: none;
-    margin-top: 14px;
-    padding: 13px;
-    background: rgba(8, 8, 8, 0.88);
-    border: 1px solid rgba(220, 210, 195, 0.15);
-    border-radius: 10px;
     text-align: center;
+    transition: opacity 1s ease, visibility 1s ease;
+    overflow:hidden;
+}
+#intro::before{content:"";position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent,rgba(65,210,255,.15),transparent,rgba(190,75,255,.18),transparent);filter:blur(45px);animation:nebulaDrift 14s ease-in-out infinite alternate}
+.intro-content{position:relative;z-index:1;animation:riseIn 1.2s both}
+
+#intro.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
-.menu.show {
-    display: block;
-    animation: fadeIn 0.25s ease;
-}
-
-.menu-heading {
-    margin: 12px 0 8px;
+.intro-content h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
+    font-size: clamp(55px, 12vw, 140px);
     font-weight: 500;
-    letter-spacing: 1.5px;
-    color: #d7c5a9;
+    letter-spacing: 10px;
 }
 
-.menu a {
-    display: block;
-    margin: 7px 0;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(220, 210, 195, 0.14);
-    background: rgba(35, 35, 35, 0.85);
-    color: #eee9e2;
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    transition: 0.2s ease;
-}
-
-.menu a:hover {
-    background: #39332b;
-    border-color: #b9a88d;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-footer {
-    text-align: center;
-    padding: 0 20px 75px;
-    color: #8a8176;
+.intro-content p {
+    margin-top: 18px;
     font-size: 11px;
-    letter-spacing: 2px;
+    letter-spacing: 6px;
+    color: #aaa;
+}
+
+.enter-btn {
+    margin-top: 45px;
+    padding: 15px 35px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 100px;
+    background: rgba(255,255,255,.05);
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.enter-btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.05);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    width: min(1100px, 92%);
+    margin: auto;
+    padding: 60px 0 100px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(55px, 9vw, 100px);
+    font-weight: 500;
+    letter-spacing: 4px;
+    background: linear-gradient(100deg,#fff 10%,#8deaff 45%,#d3a1ff 75%,#fff);
+    background-size:220% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:titleFlow 8s linear infinite;
+}
+@keyframes titleFlow {to{background-position:220% center}}
+
+.header p {
+    margin-top: 5px;
+    color: #999;
+    font-size: 11px;
+    letter-spacing: 5px;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 5000;
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    padding: 11px 15px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 12px;
+    background: rgba(8,16,35,.58);
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    backdrop-filter: blur(15px);
+    box-shadow:0 0 18px rgba(65,190,255,.10);
+    transition: .25s ease;
+}
+
+.control-btn:hover {
+    background: rgba(255,255,255,.15);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.card {
     position: relative;
-    z-index: 1;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(
+        145deg,
+        rgba(65,65,65,.72),
+        rgba(25,25,25,.78)
+    );
+    border: 1px solid rgba(255,255,255,.13);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter: blur(18px);
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease;
+    animation: riseIn .8s both, glowPulse 7s ease-in-out infinite;
+}
+.card:nth-child(2){animation-delay:.08s,.2s}.card:nth-child(3){animation-delay:.16s,.4s}.card:nth-child(4){animation-delay:.24s,.6s}.card:nth-child(5){animation-delay:.32s,.8s}.card:nth-child(6){animation-delay:.4s,1s}.card:nth-child(7){animation-delay:.48s,1.2s}.card:nth-child(8){animation-delay:.56s,1.4s}
+
+.card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(117,220,255,.65);
+    box-shadow: 0 24px 75px rgba(0,0,0,.5), 0 0 28px rgba(91,178,255,.18), inset 0 1px 0 rgba(255,255,255,.14);
 }
 
-/* MOBILE */
+.card-title {
+    margin-bottom: 15px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+    border: 1px solid rgba(255,255,255,.1);
+}
+
+.placeholder {
+    height: 220px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle, rgba(255,255,255,.08), transparent 65%),
+        #151515;
+    border: 1px solid rgba(255,255,255,.1);
+    font-size: 25px;
+    letter-spacing: 4px;
+}
+
+.play-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 12px;
+    background: rgba(255,255,255,.07);
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.play-btn:hover {
+    background: linear-gradient(100deg,#8deaff,#d5a1ff);
+    color: #070914;
+    box-shadow:0 0 25px rgba(113,203,255,.35);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.72);
+    backdrop-filter: blur(15px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-box {
+    width: min(500px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 25px;
+    background: rgba(25,25,25,.94);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: 0 30px 100px rgba(0,0,0,.7);
+}
+
+.modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.option {
+    width: 100%;
+    display: block;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    transition: .25s ease;
+}
+
+.option:hover {
+    background: white;
+    color: black;
+}
+
+.close-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* OTHERS DIRECTORY */
+.others-placeholder { flex-direction:column; gap:10px; background:radial-gradient(circle at 50% 35%,rgba(160,160,255,.18),transparent 58%),linear-gradient(135deg,#24242c,#101014); }
+.others-placeholder span { font-size:42px; color:#d9d5ff; text-shadow:0 0 25px #a49aff; }
+.others-placeholder strong { font-size:19px; letter-spacing:4px; }
+.others-placeholder small { font-size:9px; letter-spacing:2px; color:#aaa; }
+.others-search { width:100%; padding:13px 15px; margin:0 0 12px; border:1px solid rgba(255,255,255,.2); border-radius:12px; outline:none; background:rgba(255,255,255,.08); color:#fff; font:inherit; }
+.others-count { color:#aaa; font-size:10px; letter-spacing:2px; text-align:center; margin-bottom:12px; }
+.others-list { max-height:52vh; overflow-y:auto; padding-right:4px; }
+.others-list .option { text-align:left; letter-spacing:.5px; overflow-wrap:anywhere; }
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important} }
+
 @media (max-width: 700px) {
-    header {
-        padding-top: 55px;
+    .main {
+        padding-top: 85px;
     }
 
-    .container {
-        padding: 20px;
-    }
-
-    .cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-    }
-
-    .card {
-        padding: 12px;
-    }
-
-    .card img,
-    .placeholder {
-        height: 130px;
-    }
-
-    .card h2 {
-        font-size: 23px;
-    }
-
-    .city {
-        height: 30vh;
-    }
-}
-
-@media (max-width: 350px) {
-    .cards {
+    .links {
         grid-template-columns: 1fr;
     }
 
-    .music-control {
-        right: 10px;
-        bottom: 10px;
+    .card-image,
+    .placeholder {
+        height: 200px;
+    }
+
+    .controls {
+        top: 12px;
+        right: 12px;
+    }
+
+    .control-btn {
+        padding: 9px 11px;
+        font-size: 9px;
     }
 }
 </style>
@@ -463,278 +454,460 @@ footer {
 
 <body>
 
-<!-- INTRO SCREEN -->
-<div class="intro-screen" id="introScreen" onclick="enterWebsite()">
-    <div class="intro-title">A NIGHT OUT</div>
-    <div class="intro-line"></div>
-    <div class="intro-subtitle">CLICK TO ENTER</div>
-    <div class="intro-hint">
-        <strong>PRESS M</strong> TO TURN MUSIC OFF<br>
-        YOU CAN ALSO USE THE MUSIC BUTTON
+<div class="background"><div class="starfield"></div>
+
+    <div class="city">
+        <div class="building b1"></div>
+        <div class="building b2"></div>
+        <div class="building b3"></div>
+        <div class="building b4"></div>
+        <div class="building b5"></div>
+        <div class="building b6"></div>
+        <div class="building b7"></div>
+        <div class="building b8"></div>
+        <div class="building b9"></div>
+        <div class="building b10"></div>
+        <div class="building b11"></div>
+        <div class="building b12"></div>
+        <div class="building b13"></div>
+        <div class="building b14"></div>
+        <div class="building b15"></div>
+        <div class="building b16"></div>
+        <div class="building b17"></div>
+        <div class="building b18"></div>
+    </div>
+
+</div>
+
+<div class="bg-picker" aria-label="Choose background">
+  <button type="button" data-bg="milkyway" aria-pressed="true" onclick="setBackground('milkyway',this)">✦ MILKY WAY</button>
+  <button type="button" data-bg="aurora" aria-pressed="false" onclick="setBackground('aurora',this)">✧ AURORA</button>
+  <button type="button" data-bg="sunset" aria-pressed="false" onclick="setBackground('sunset',this)">☼ NEBULA</button>
+  <button type="button" data-bg="matrix" aria-pressed="false" onclick="setBackground('matrix',this)">⌁ MATRIX</button>
+</div>
+
+<!-- INTRO -->
+
+<div id="intro">
+    <div class="intro-content">
+        <div class="loader-orbit" aria-hidden="true"></div>
+        <h1>STUDENT HUB</h1>
+        <p>ENTER YOUR DIGITAL UNIVERSE</p>
+        <div class="loading-label" id="loadingLabel">INITIALIZING GALAXY...</div>
+        <div class="loading-track"><div class="loading-fill"></div></div>
+        <button class="enter-btn" id="enterButton" onclick="enterSite()" disabled style="opacity:.45;cursor:wait">LOADING...</button>
     </div>
 </div>
 
-<!-- CITY SKYLINE -->
-<div class="city" aria-hidden="true">
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
-    <div class="building tall"></div>
-    <div class="building"></div>
+<!-- CONTROLS -->
+
+<div class="controls">
+
+    <button class="control-btn" onclick="toggleFullscreen()" id="fullscreenBtn">
+        ⛶ FULLSCREEN
+    </button>
+
+    <button class="control-btn" onclick="toggleMusic()" id="musicBtn">
+        ♪ MUSIC
+    </button>
+
 </div>
 
-<header>
-    <h1>Student Hub</h1>
-    <p>Your links, all in one place</p>
-</header>
+<!-- MAIN -->
 
-<main class="container">
-    <h2 class="section-title">Choose Your Destination</h2>
+<main class="main">
 
-    <div class="cards">
+    <header class="header">
+        <h1>Student Hub</h1>
+        <p>YOUR DIGITAL NIGHTSPACE</p>
+    </header>
+
+    <section class="links">
 
         <!-- CLASSROOM -->
-        <div class="card menu-card">
-            <h2>CLASSROOM</h2>
-            <img src="https://i.postimg.cc/9MghdFzL/IMG-2574.jpg" alt="Classroom">
-            <button onclick="toggleMenu('classroomMenu')">PLAY</button>
-            <div class="menu" id="classroomMenu">
-                <a href="https://lgbtqiaplus.b-cdn.net/" target="_blank" rel="noopener noreferrer">MAIN LINK</a>
-                <a href="https://mathkit.org/" target="_blank" rel="noopener noreferrer">LINK 2</a>
-            </div>
+
+        <div class="card">
+            <div class="card-title">CLASSROOM</div>
+
+            <img
+                class="card-image"
+                src="https://i.postimg.cc/9MghdFzL/IMG-2574.jpg"
+                alt="Classroom"
+            >
+
+            <button class="play-btn"
+                onclick="openMenu('CLASSROOM', [
+                    ['MAIN LINK', 'https://lgbtqiaplus.b-cdn.net/'],
+                    ['LINK 2', 'https://mathkit.org/']
+                ])">
+                ▶ PLAY
+            </button>
         </div>
 
         <!-- SATONA -->
+
         <div class="card">
-            <h2>SATONA</h2>
-            <img src="https://i.postimg.cc/Dyx5gJgK/IMG-2576.jpg" alt="Satona">
-            <button onclick="window.open('https://satona-study.b-cdn.net/', '_blank', 'noopener')">PLAY</button>
+            <div class="card-title">SATONA</div>
+
+            <img
+                class="card-image"
+                src="https://i.postimg.cc/Dyx5gJgK/IMG-2576.jpg"
+                alt="Satona"
+            >
+
+            <button class="play-btn"
+                onclick="openLink('https://satona-study.b-cdn.net/')">
+                ▶ PLAY
+            </button>
         </div>
 
         <!-- HYDRA -->
-        <div class="card menu-card">
-            <h2>HYDRA</h2>
-            <img src="https://i.postimg.cc/qMysg1mj/IMG-2578.jpg" alt="Hydra">
-            <button onclick="toggleMenu('hydraMenu')">PLAY</button>
-            <div class="menu" id="hydraMenu">
-                <a href="https://a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-and-z.b-cdn.net/" target="_blank" rel="noopener noreferrer">LINK 1</a>
-                <a href="https://google-doc-boom.b-cdn.net/" target="_blank" rel="noopener noreferrer">LINK 2</a>
-            </div>
+
+        <div class="card">
+            <div class="card-title">HYDRA</div>
+
+            <img
+                class="card-image"
+                src="https://i.postimg.cc/qMysg1mj/IMG-2578.jpg"
+                alt="Hydra"
+            >
+
+            <button class="play-btn"
+                onclick="openMenu('HYDRA', [
+                    ['MAIN LINK', 'https://a-b-c-d-e-f-g-h-i-j-k-l-m-n-o-p-q-r-s-t-u-v-w-x-y-and-z.b-cdn.net/'],
+                    ['LINK 2', 'https://google-doc-boom.b-cdn.net/']
+                ])">
+                ▶ PLAY
+            </button>
         </div>
 
-        <!-- GSN BETA -->
-        <div class="card menu-card">
-            <h2>GSN BETA</h2>
-            <img src="https://i.postimg.cc/dtGw8jFP/IMG-2580.jpg" alt="GSN Beta">
-            <button onclick="toggleMenu('gsnMenu')">PLAY</button>
-            <div class="menu" id="gsnMenu">
-                <div class="menu-heading">PS-GSN</div>
-                <a href="https://gsnplay01.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 1</a>
-                <a href="https://gsnplay02.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 2</a>
-                <a href="https://gsnplay03.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 3</a>
-                <a href="https://gsnplay04.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 4</a>
-                <a href="https://gsnplay05.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 5</a>
-                <a href="https://gsnplay06.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 6</a>
-                <a href="https://gsnplay07.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 7</a>
-                <a href="https://gsnplay08.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 8</a>
-                <a href="https://gsnplay09.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 9</a>
-                <a href="https://gsnplay10.b-cdn.net/?shell=ps" target="_blank" rel="noopener noreferrer">LINK 10</a>
+        <!-- GSN -->
 
-                <div class="menu-heading">XB-GSN</div>
-                <a href="https://gsnplay01.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 1</a>
-                <a href="https://gsnplay02.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 2</a>
-                <a href="https://gsnplay03.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 3</a>
-                <a href="https://gsnplay04.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 4</a>
-                <a href="https://gsnplay05.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 5</a>
-                <a href="https://gsnplay06.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 6</a>
-                <a href="https://gsnplay07.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 7</a>
-                <a href="https://gsnplay08.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 8</a>
-                <a href="https://gsnplay09.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 9</a>
-                <a href="https://gsnplay10.b-cdn.net/?shell=xbox" target="_blank" rel="noopener noreferrer">LINK 10</a>
-            </div>
+        <div class="card">
+            <div class="card-title">GSN BETA</div>
+
+            <img
+                class="card-image"
+                src="https://i.postimg.cc/dtGw8jFP/IMG-2580.jpg"
+                alt="GSN Beta"
+            >
+
+            <button class="play-btn"
+                onclick="openMenu('GSN BETA', [
+                    ['PS GSN 01', 'https://gsnplay01.b-cdn.net/?shell=ps'],
+                    ['PS GSN 02', 'https://gsnplay02.b-cdn.net/?shell=ps'],
+                    ['PS GSN 03', 'https://gsnplay03.b-cdn.net/?shell=ps'],
+                    ['PS GSN 04', 'https://gsnplay04.b-cdn.net/?shell=ps'],
+                    ['PS GSN 05', 'https://gsnplay05.b-cdn.net/?shell=ps'],
+                    ['PS GSN 06', 'https://gsnplay06.b-cdn.net/?shell=ps'],
+                    ['PS GSN 07', 'https://gsnplay07.b-cdn.net/?shell=ps'],
+                    ['PS GSN 08', 'https://gsnplay08.b-cdn.net/?shell=ps'],
+                    ['PS GSN 09', 'https://gsnplay09.b-cdn.net/?shell=ps'],
+                    ['PS GSN 10', 'https://gsnplay10.b-cdn.net/?shell=ps'],
+                    ['XB GSN 01', 'https://gsnplay01.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 02', 'https://gsnplay02.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 03', 'https://gsnplay03.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 04', 'https://gsnplay04.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 05', 'https://gsnplay05.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 06', 'https://gsnplay06.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 07', 'https://gsnplay07.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 08', 'https://gsnplay08.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 09', 'https://gsnplay09.b-cdn.net/?shell=xbox'],
+                    ['XB GSN 10', 'https://gsnplay10.b-cdn.net/?shell=xbox']
+                ])">
+                ▶ PLAY
+            </button>
         </div>
 
         <!-- MONOXIDE -->
-        <div class="card menu-card">
-            <h2>MONOXIDE</h2>
-            <img src="https://i.postimg.cc/gjHdPGNv/IMG-2581.jpg" alt="Monoxide">
-            <button onclick="toggleMenu('monoxideMenu')">PLAY</button>
-            <div class="menu" id="monoxideMenu">
-                <a href="https://boiledone.b-cdn.net" target="_blank" rel="noopener noreferrer">LINK 1</a>
-                <a href="https://ushistory.b-con.net" target="_blank" rel="noopener noreferrer">LINK 2</a>
-                <a href="https://ageverification.b-cdn.net" target="_blank" rel="noopener noreferrer">LINK 3</a>
-            </div>
+
+        <div class="card">
+            <div class="card-title">MONOXIDE</div>
+
+            <img
+                class="card-image"
+                src="https://i.postimg.cc/gjHdPGNv/IMG-2581.jpg"
+                alt="Monoxide"
+            >
+
+            <button class="play-btn"
+                onclick="openMenu('MONOXIDE', [
+                    ['MAIN LINK', 'https://boiledone.b-cdn.net'],
+                    ['LINK 2', 'https://ushistory.b-con.net'],
+                    ['LINK 3', 'https://ageverification.b-cdn.net']
+                ])">
+                ▶ PLAY
+            </button>
         </div>
 
         <!-- DUCK -->
+
         <div class="card">
-            <h2>DUCK 🦆</h2>
-            <div class="placeholder">🦆 DUCK 🦆</div>
-            <button onclick="window.open('https://edymath.com/', '_blank', 'noopener')">PLAY</button>
+            <div class="card-title">DUCK</div>
+
+            <div class="placeholder">
+                🦆 DUCK 🦆
+            </div>
+
+            <button class="play-btn"
+                onclick="openLink('https://edymath.com/')">
+                ▶ PLAY
+            </button>
+        </div>
+
+        <!-- UNBLOCKED CLOUD -->
+
+        <div class="card">
+            <div class="card-title">UNBLOCKED CLOUD</div>
+
+            <div class="placeholder">
+                ☁ UNBLOCKED CLOUD ☁
+            </div>
+
+            <button class="play-btn"
+                onclick="openLink('https://Pilandok-7rzwb6.my.canva.site/more-proxy-links')">
+                ▶ PLAY
+            </button>
         </div>
 
         <!-- CLASSROOM SPOT -->
+
         <div class="card">
-            <h2>CLASSROOM SPOT</h2>
-            <div class="placeholder">✦ CLASSROOM SPOT ✦</div>
-            <button onclick="window.open('https://unpkg.com/sonwhoareyou@1.0.1/classroom.html', '_blank', 'noopener')">PLAY</button>
+            <div class="card-title">CLASSROOM SPOT</div>
+
+            <div class="placeholder">
+                ✦ CLASSROOM SPOT ✦
+            </div>
+
+            <button class="play-btn"
+                onclick="openLink('https://unpkg.com/sonwhoareyou@1.0.1/classroom.html')">
+                ▶ PLAY
+            </button>
         </div>
 
-    </div>
+
+        <!-- OTHERS -->
+        <div class="card others-card">
+            <div class="card-title">OTHERS</div>
+            <div class="placeholder others-placeholder"><span>✦</span><strong>OTHER SITES</strong><small>ONE PLACE · ALL YOUR LINKS</small></div>
+            <button class="play-btn" onclick="openOthers()">▶ EXPLORE SITES</button>
+        </div>
+
+    </section>
+
 </main>
 
-<footer>STUDENT HUB</footer>
+<!-- MODAL -->
 
-<button class="music-control" id="musicButton" onclick="toggleMusic()">
-    ♫ PLAY NIGHT MUSIC
-</button>
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-title" id="modalTitle">
+            SELECT LINK
+        </div>
+
+        <div id="modalOptions"></div>
+
+        <button class="close-btn" onclick="closeModal()">
+            CLOSE
+        </button>
+
+    </div>
+
+</div>
+
+<!-- MUSIC -->
+
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b8a8b6e.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* INTRO FADE */
-function enterWebsite() {
-    document.getElementById("introScreen").classList.add("fade-out");
+
+/* =========================
+   INTRO
+========================= */
+
+function setBackground(theme, button) {
+    document.body.dataset.theme = theme;
+    document.querySelectorAll('.bg-picker button').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+    try { localStorage.setItem('studentHubBackground', theme); } catch(e) {}
 }
 
-/* MENU FUNCTION */
-function toggleMenu(menuId) {
-    const menu = document.getElementById(menuId);
-    const wasOpen = menu.classList.contains("show");
+(function initBackground() {
+    let saved = 'milkyway';
+    try { saved = localStorage.getItem('studentHubBackground') || 'milkyway'; } catch(e) {}
+    const valid = ['milkyway','aurora','sunset','matrix'].includes(saved) ? saved : 'milkyway';
+    document.body.dataset.theme = valid;
+    document.querySelectorAll('.bg-picker button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.bg === valid)));
+})();
 
-    document.querySelectorAll(".menu").forEach(function(item) {
-        item.classList.remove("show");
-    });
-
-    if (!wasOpen) {
-        menu.classList.add("show");
-    }
-}
-
-document.addEventListener("click", function(event) {
-    if (!event.target.closest(".menu-card")) {
-        document.querySelectorAll(".menu").forEach(function(item) {
-            item.classList.remove("show");
-        });
-    }
+window.addEventListener('load', () => {
+    const label = document.getElementById('loadingLabel');
+    const button = document.getElementById('enterButton');
+    if (label) label.textContent = 'GALAXY READY';
+    if (button) { button.disabled = false; button.textContent = 'ENTER STUDENT HUB'; button.style.opacity = '1'; button.style.cursor = 'pointer'; }
 });
 
-/* BUILT-IN NIGHT MUSIC */
-let audioContext;
+function enterSite() {
+
+    document.getElementById("intro").classList.add("hidden");
+
+    const music = document.getElementById("music");
+
+    music.volume = 0.25;
+
+    music.play().catch(() => {});
+
+}
+
+/* =========================
+   MUSIC
+========================= */
+
 let musicPlaying = false;
-let musicTimer;
-let chordIndex = 0;
 
-function playNote(frequency, startTime, duration, volume, waveType) {
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
+function toggleMusic() {
 
-    oscillator.type = waveType || "sine";
-    oscillator.frequency.value = frequency;
-
-    gain.gain.setValueAtTime(0, startTime);
-    gain.gain.linearRampToValueAtTime(volume, startTime + 1.2);
-    gain.gain.setValueAtTime(volume, startTime + duration - 1.2);
-    gain.gain.linearRampToValueAtTime(0, startTime + duration);
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start(startTime);
-    oscillator.stop(startTime + duration + 0.1);
-}
-
-function playChord() {
-    if (!musicPlaying || !audioContext) return;
-
-    const chords = [
-        [130.81, 164.81, 196.00, 246.94],
-        [110.00, 138.59, 164.81, 207.65],
-        [146.83, 174.61, 220.00, 261.63],
-        [123.47, 155.56, 185.00, 233.08]
-    ];
-
-    const melody = [392.00, 440.00, 349.23, 329.63];
-
-    function playNext() {
-        if (!musicPlaying) return;
-
-        const chord = chords[chordIndex % chords.length];
-        const now = audioContext.currentTime;
-
-        chord.forEach(function(note, index) {
-            playNote(note, now + index * 0.08, 5.5, 0.025, "sine");
-        });
-
-        playNote(
-            melody[chordIndex % melody.length],
-            now + 0.5,
-            3.5,
-            0.012,
-            "triangle"
-        );
-
-        chordIndex++;
-    }
-
-    playNext();
-    musicTimer = setInterval(playNext, 5000);
-}
-
-async function toggleMusic() {
-    const button = document.getElementById("musicButton");
-
-    if (!audioContext) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-
-        if (!AudioContextClass) {
-            button.textContent = "MUSIC NOT SUPPORTED";
-            return;
-        }
-
-        audioContext = new AudioContextClass();
-    }
+    const music = document.getElementById("music");
+    const button = document.getElementById("musicBtn");
 
     if (musicPlaying) {
+
+        music.pause();
         musicPlaying = false;
-        clearInterval(musicTimer);
-        await audioContext.suspend();
+        button.textContent = "♪ MUSIC";
 
-        button.textContent = "♫ PLAY NIGHT MUSIC";
-        button.classList.remove("playing");
     } else {
-        await audioContext.resume();
+
+        music.play().catch(() => {});
         musicPlaying = true;
+        button.textContent = "♫ MUSIC ON";
 
-        button.textContent = "♫ MUSIC ON — PRESS M";
-        button.classList.add("playing");
-
-        playChord();
     }
+
 }
 
-/* PRESS M TO TOGGLE MUSIC */
-document.addEventListener("keydown", function(event) {
-    if (event.key.toLowerCase() === "m" && !event.repeat) {
-        const tag = document.activeElement.tagName.toLowerCase();
+/* =========================
+   FULLSCREEN
+========================= */
 
-        if (tag === "input" || tag === "textarea") return;
+function toggleFullscreen() {
 
-        toggleMusic();
+    if (!document.fullscreenElement) {
+
+        document.documentElement.requestFullscreen().catch(() => {});
+
+    } else {
+
+        document.exitFullscreen().catch(() => {});
+
     }
 
-    /* ENTER KEY ALSO DISMISSES INTRO */
-    if (event.key === "Enter") {
-        enterWebsite();
+}
+
+document.addEventListener("fullscreenchange", function() {
+
+    const button = document.getElementById("fullscreenBtn");
+
+    if (document.fullscreenElement) {
+
+        button.textContent = "⛶ EXIT FULLSCREEN";
+
+    } else {
+
+        button.textContent = "⛶ FULLSCREEN";
+
     }
+
 });
+
+/* =========================
+   OPEN LINK
+========================= */
+
+function openLink(url) {
+
+    window.open(url, "_blank");
+
+}
+
+/* =========================
+   MENU
+========================= */
+
+function openMenu(title, options) {
+
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalOptions = document.getElementById("modalOptions");
+
+    modalTitle.textContent = title;
+
+    modalOptions.innerHTML = "";
+
+    options.forEach(function(option) {
+
+        const link = document.createElement("a");
+
+        link.className = "option";
+        link.href = option[1];
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = option[0];
+
+        modalOptions.appendChild(link);
+
+    });
+
+    modal.classList.add("active");
+
+}
+
+
+/* =========================
+   OTHERS DIRECTORY
+========================= */
+const otherSites = [["viroda1.github.io/school-learning-experience-good-for-education.edu","https://viroda1.github.io/school-learning-experience-good-for-education.edu"],["clever.com.silksky.com/g","https://clever.com.silksky.com/g"],["epickfr.github.io/proxlinksandsuch","https://epickfr.github.io/proxlinksandsuch"],["ohio-sigma.zone.id/","http://ohio-sigma.zone.id/"],["ccs0715.789888.xyz/","https://ccs0715.789888.xyz/"],["edu.mouse-hole.com/","https://edu.mouse-hole.com/"],["help.learnbyvisuals.com/","https://help.learnbyvisuals.com/"],["info.sheph.com/","https://info.sheph.com/"],["stuffidk.infotechnology.com/","https://stuffidk.infotechnology.com/"],["vcxdsafd-17856301.codehs.me/index.html","https://vcxdsafd-17856301.codehs.me/index.html"],["vercel-nine-wheat.vercel.app/","https://vercel-nine-wheat.vercel.app/"],["violetflamingo9804.codehs.me/","https://violetflamingo9804.codehs.me/"],["vvvxzvf-17856307.codehs.me/index.html","https://vvvxzvf-17856307.codehs.me/index.html"],["weiner-17856293.codehs.me/index.html","https://weiner-17856293.codehs.me/index.html"],["zohfb-17856298.codehs.me/index.html","https://zohfb-17856298.codehs.me/index.html"],["zzzzzzfdf-17856304.codehs.me/index.html","https://zzzzzzfdf-17856304.codehs.me/index.html"],["unpkg.com/algebra-calculus-calculator@1.0.0/index.html","https://unpkg.com/algebra-calculus-calculator@1.0.0/index.html"],["esm.sh/algebra-calculus-calculator@1.0.0/index.html","https://esm.sh/algebra-calculus-calculator@1.0.0/index.html"],["script.google.com/a/macros/student.pps.net/s/AKfycbzxr0JXwCFcNvPPFtF4...","https://script.google.com/a/macros/student.pps.net/s/AKfycbzxr0JXwCFcNvPPFtF4uZ5Qt8fmFUwM28CUvw9URrBMOGBoNXwDj2_F3xTIbDH1OH1b/exec"],["habitual-rabbits.surge.sh/","https://habitual-rabbits.surge.sh/"],["biologyscience.work.gd/","https://biologyscience.work.gd/"],["jimscat.web.app/","https://jimscat.web.app/"],["jimscat.firebaseapp.com/","https://jimscat.firebaseapp.com/"],["mycat-a93ea.web.app/","https://mycat-a93ea.web.app/"],["mycat-a93ea.firebaseapp.com/","https://mycat-a93ea.firebaseapp.com/"],["nyancat-4c97f.web.app/","https://nyancat-4c97f.web.app/"],["nyancat-4c97f.firebaseapp.com/","https://nyancat-4c97f.firebaseapp.com/"],["fishlessfreight.web.app/","https://fishlessfreight.web.app/"],["fishlessfreight.firebaseapp.com/","https://fishlessfreight.firebaseapp.com/"],["endlessvibeco.de/","https://endlessvibeco.de/"],["dreams.night.int.yt/","https://dreams.night.int.yt/"],["mathhelp-fast.extraneousu.com/","https://mathhelp-fast.extraneousu.com/"],["andrewdavidsonphotography.com/","https://andrewdavidsonphotography.com/"],["cdn.deez.nz/","https://cdn.deez.nz/"],["chillz0ne.dev/","https://chillz0ne.dev/"],["classlink-3qs.pages.dev/","https://classlink-3qs.pages.dev/"],["czone-six.vercel.app/","https://czone-six.vercel.app/"],["deltamath-demo.s3.amazonaws.com/index.html","https://deltamath-demo.s3.amazonaws.com/index.html"],["doxwind.xyz/","https://doxwind.xyz/"],["educationate.storage.googleapis.com/index.html","https://educationate.storage.googleapis.com/index.html"],["hi.lunoluno.org/","https://hi.lunoluno.org/"],["jsitor.com/preview/IwPfzQE6k","https://jsitor.com/preview/IwPfzQE6k"],["maddox.games/","https://maddox.games/"],["mkplaza.github.io/","https://mkplaza.github.io/"],["oilriga.bostoncareercounselor.com/","https://oilriga.bostoncareercounselor.com/"],["script.google.com/macros/s/AKfycbwZ7pe86LXdIBFFl7LDXgA2kFkfN2J251Q2qc...","https://script.google.com/macros/s/AKfycbwZ7pe86LXdIBFFl7LDXgA2kFkfN2J251Q2qcfYYBq_z05RFuz4Hn8P25zsImE-c_yJ/exec"],["sorryvorgilltrytobemoreactve.hr24.ro/","https://sorryvorgilltrytobemoreactve.hr24.ro/"],["spark.bostoncareercounselor.com/","https://spark.bostoncareercounselor.com/"],["unpkg.com/valoq-math-work@1.0.17/index.html","https://unpkg.com/valoq-math-work@1.0.17/index.html"],["vorg-ease.release-the.vorg.filea.bostoncareercounselor.com/","https://vorg-ease.release-the.vorg.filea.bostoncareercounselor.com/"],["vorg.forced.me-save.me-pleaseeeee.bostoncareercounselor.com/","https://vorg.forced.me-save.me-pleaseeeee.bostoncareercounselor.com/"],["www.securly.com.hr24.ro/","https://www.securly.com.hr24.ro/"],["seraph-games.github.io/","http://seraph-games.github.io/"],["bidoofery.github.io/","https://bidoofery.github.io/"],["carb0n.vercel.app/","https://carb0n.vercel.app/"],["classroom.hkica.com/","https://classroom.hkica.com/"],["diesmos-games-17792966.codehs.me/index.html","https://diesmos-games-17792966.codehs.me/index.html"],["doctor-ge-lao-shi.global.ssl.fastly.net/","https://doctor-ge-lao-shi.global.ssl.fastly.net/"],["doctor-ge-laoshi.global.ssl.fastly.net/","https://doctor-ge-laoshi.global.ssl.fastly.net/"],["doctorge-laoshi.global.ssl.fastly.net/","https://doctorge-laoshi.global.ssl.fastly.net/"],["doctorge.global.ssl.fastly.net/","https://doctorge.global.ssl.fastly.net/"],["dr-ge-lao-shi.global.ssl.fastly.net/","https://dr-ge-lao-shi.global.ssl.fastly.net/"],["dr-ge-laoshi.global.ssl.fastly.net/","https://dr-ge-laoshi.global.ssl.fastly.net/"],["dr-gelao-shi.global.ssl.fastly.net/","https://dr-gelao-shi.global.ssl.fastly.net/"],["drge.global.ssl.fastly.net/","https://drge.global.ssl.fastly.net/"],["drgelaoshi.global.ssl.fastly.net/","https://drgelaoshi.global.ssl.fastly.net/"],["ee.rxtech.cl/","https://ee.rxtech.cl/"],["family.sinuabi.ee/","https://family.sinuabi.ee/"],["ge-laoshi.global.ssl.fastly.net/","https://ge-laoshi.global.ssl.fastly.net/"],["gelaoshi.global.ssl.fastly.net/","https://gelaoshi.global.ssl.fastly.net/"],["host.bostoncareercounselor.com/","https://host.bostoncareercounselor.com/"],["infinite-craft.gg/","https://infinite-craft.gg/"],["jetyehs.github.io/","https://jetyehs.github.io/"],["jian-dang-ge.global.ssl.fastly.net/","https://jian-dang-ge.global.ssl.fastly.net/"],["jian-dang-gelao-shi.global.ssl.fastly.net/","https://jian-dang-gelao-shi.global.ssl.fastly.net/"],["jian-dang-gelaoshi.global.ssl.fastly.net/","https://jian-dang-gelaoshi.global.ssl.fastly.net/"],["jian-dang.global.ssl.fastly.net/","https://jian-dang.global.ssl.fastly.net/"],["jian-dangge-laoshi.global.ssl.fastly.net/","https://jian-dangge-laoshi.global.ssl.fastly.net/"],["jian-danggelao-shi.global.ssl.fastly.net/","https://jian-danggelao-shi.global.ssl.fastly.net/"],["jiandang-ge-lao-shi.global.ssl.fastly.net/","https://jiandang-ge-lao-shi.global.ssl.fastly.net/"],["jiandang-ge.global.ssl.fastly.net/","https://jiandang-ge.global.ssl.fastly.net/"],["jiandang-gelaoshi.global.ssl.fastly.net/","https://jiandang-gelaoshi.global.ssl.fastly.net/"],["jiandangge-laoshi.global.ssl.fastly.net/","https://jiandangge-laoshi.global.ssl.fastly.net/"],["jiandangge.global.ssl.fastly.net/","https://jiandangge.global.ssl.fastly.net/"],["jiandanggelaoshi.global.ssl.fastly.net/","https://jiandanggelaoshi.global.ssl.fastly.net/"],["jordnanblee.github.io/seraph","https://jordnanblee.github.io/seraph"],["lao-shi-ge.global.ssl.fastly.net/","https://lao-shi-ge.global.ssl.fastly.net/"],["lao-shige.global.ssl.fastly.net/","https://lao-shige.global.ssl.fastly.net/"],["laoshi-ge.global.ssl.fastly.net/","https://laoshi-ge.global.ssl.fastly.net/"],["laoshi.global.ssl.fastly.net/","https://laoshi.global.ssl.fastly.net/"],["laoshige.global.ssl.fastly.net/","https://laoshige.global.ssl.fastly.net/"],["mister-ge-lao-shi.global.ssl.fastly.net/","https://mister-ge-lao-shi.global.ssl.fastly.net/"],["mister-gelao-shi.global.ssl.fastly.net/","https://mister-gelao-shi.global.ssl.fastly.net/"],["mister-gelaoshi.global.ssl.fastly.net/","https://mister-gelaoshi.global.ssl.fastly.net/"],["misterge-laoshi.global.ssl.fastly.net/","https://misterge-laoshi.global.ssl.fastly.net/"],["misterge.global.ssl.fastly.net/","https://misterge.global.ssl.fastly.net/"],["mistergelao-shi.global.ssl.fastly.net/","https://mistergelao-shi.global.ssl.fastly.net/"],["mr-ge-is-so-cool.global.ssl.fastly.net/","https://mr-ge-is-so-cool.global.ssl.fastly.net/"],["mr-ge-lao-shi.global.ssl.fastly.net/","https://mr-ge-lao-shi.global.ssl.fastly.net/"],["mr-ge-laoshi.global.ssl.fastly.net/","https://mr-ge-laoshi.global.ssl.fastly.net/"],["mr-ge-tuff.global.ssl.fastly.net/","https://mr-ge-tuff.global.ssl.fastly.net/"],["mr-ge.global.ssl.fastly.net/","https://mr-ge.global.ssl.fastly.net/"],["mr-gelao-shi.global.ssl.fastly.net/","https://mr-gelao-shi.global.ssl.fastly.net/"],["mr-gelaoshi.global.ssl.fastly.net/","https://mr-gelaoshi.global.ssl.fastly.net/"],["mrge-lao-shi.global.ssl.fastly.net/","https://mrge-lao-shi.global.ssl.fastly.net/"],["mrgeissocool.global.ssl.fastly.net/","https://mrgeissocool.global.ssl.fastly.net/"],["mrgelao-shi.global.ssl.fastly.net/","https://mrgelao-shi.global.ssl.fastly.net/"],["noahsamazingtutoringhelp.github.io/Noahs-Calculus-Tutor","https://noahsamazingtutoringhelp.github.io/Noahs-Calculus-Tutor"],["saturnproxy.games/","https://saturnproxy.games/"],["sci.grasic.info/","https://sci.grasic.info/"],["script.google.com/macros/s/AKfycby7KHWULYNdWgXuxW5uKNdZFw9Vq1ANzB7udD...","https://script.google.com/macros/s/AKfycby7KHWULYNdWgXuxW5uKNdZFw9Vq1ANzB7udDNqNuM8XgJ2cpAcJ70zeoUfdywOqu__/exec"],["site.tovamiasto.com/","https://site.tovamiasto.com/"],["stuff.qjdy.net/","https://stuff.qjdy.net/"],["sz-games.github.io/","https://sz-games.github.io/"],["theooofficial.github.io/myRETROGAMES","https://theooofficial.github.io/myRETROGAMES"],["unblockedgames64.github.io/","https://unblockedgames64.github.io/"],["us.slytoday.com/","https://us.slytoday.com/"],["use.bostoncareercounselor.com/","https://use.bostoncareercounselor.com/"],["we-love-mr-ge.global.ssl.fastly.net/","https://we-love-mr-ge.global.ssl.fastly.net/"],["web.tovamiasto.com/","https://web.tovamiasto.com/"],["megahack41.imiamintesc.ro/","https://megahack41.imiamintesc.ro/"],["megahack67.chickenkiller.com/","https://megahack67.chickenkiller.com/"],["auon00.xhost.ro/","http://auon00.xhost.ro/"],["f.spoolls.com/a","http://f.spoolls.com/a"],["invidious.flokinet.to/search?q=","http://invidious.flokinet.to/search?q="],["proxycrime.com/","http://proxycrime.com/"],["unblockthatsite.net/index.php","http://unblockthatsite.net/index.php"],["www.newcastlenerd.com.au/envoy","http://www.newcastlenerd.com.au/envoy"],["www.proxymefree.com/","http://www.proxymefree.com/"],["www.weissmann.fr/","http://www.weissmann.fr/"],["4jtj0j-8011.preview.csb.app/","https://4jtj0j-8011.preview.csb.app/"],["cdn.croxyproxy.com/","https://cdn.croxyproxy.com/"],["hidester.com/fr/proxy","https://hidester.com/fr/proxy"],["inv.odyssey346.dev/","https://inv.odyssey346.dev/"],["inv.odyssey346.dev/feed/popular","https://inv.odyssey346.dev/feed/popular"],["invidious-us.kavin.rocks/","https://invidious-us.kavin.rocks/"],["invidious.flokinet.to/","https://invidious.flokinet.to/"],["invidious.flokinet.to/feed/popular","https://invidious.flokinet.to/feed/popular"],["invidious.nerdvpn.de/","https://invidious.nerdvpn.de/"],["invidious.projectsegfau.lt/feed","https://invidious.projectsegfau.lt/feed"],["invidious.stemy.me/","https://invidious.stemy.me/"],["invidious.vern.cc/feed/popular","https://invidious.vern.cc/feed/popular"],["lqeuh3-8011.preview.csb.app/","https://lqeuh3-8011.preview.csb.app/"],["m8zp7k.sse.codesandbox.io/","https://m8zp7k.sse.codesandbox.io/"],["mtool.work/mp3/index","https://mtool.work/mp3/index"],["proxy.schel.li/","https://proxy.schel.li/"],["roro.su/","https://roro.su/"],["tube.cadence.moe/","https://tube.cadence.moe/"],["webproxy.club/","https://webproxy.club/"],["www.croxy.network/","https://www.croxy.network/"],["www.croxy.org/","https://www.croxy.org/"],["www.tuber-town.com/","https://www.tuber-town.com/"],["y2hub.cc/jahV9P","https://y2hub.cc/jahV9P"],["ysklog.net/tool/avoid-filtering.html","https://ysklog.net/tool/avoid-filtering.html"],["ytcobitt.com/","https://ytcobitt.com/"],["brepsacodi.roostish.com/","http://brepsacodi.roostish.com/"],["fast.fhoster.ru/","https://fast.fhoster.ru/"],["manually-relaxed-alien.global.ssl.fastly.net/","https://manually-relaxed-alien.global.ssl.fastly.net/"],["mikumovieispeak.global.ssl.fastly.net/","https://mikumovieispeak.global.ssl.fastly.net/"],["voided-shielf.gravityenergygenerator.com/","https://voided-shielf.gravityenergygenerator.com/"],["void-core.gravityenergygenerator.com/","https://void-core.gravityenergygenerator.com/"],["voidmath.gravityenergygenerator.com/","http://voidmath.gravityenergygenerator.com/"],["f.freetls.fastly.net/","https://f.freetls.fastly.net/"],["admin.v2202508297531378155.powersrv.de/","https://admin.v2202508297531378155.powersrv.de/"],["classroom.boiso.ar/","https://classroom.boiso.ar/"],["quick-learning.gorich.hk/","http://quick-learning.gorich.hk/"],["d11jzht7mj96rr.cloudfront.net/","http://d11jzht7mj96rr.cloudfront.net/"],["gold-static.pages.dev/","http://gold-static.pages.dev/"],["kriptic-edition-3-0.vercel.app/","http://kriptic-edition-3-0.vercel.app/"],["kripticedition2.neocities.org/","http://kripticedition2.neocities.org/"],["math-homework.site/","http://math-homework.site/"],["pizagame.com/","http://pizagame.com/"],["pizagame.pages.dev/","http://pizagame.pages.dev/"],["quiz-70.pro/","http://quiz-70.pro/"],["venturehq.net/","http://venturehq.net/"],["67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67--17246506.codeh...","https://67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67-67--17246506.codehs.me/"],["aaaaaaaa-17676014.codehs.me/index.html","https://aaaaaaaa-17676014.codehs.me/index.html"],["ali-in-a-new-dress.global.ssl.fastly.net/","https://ali-in-a-new-dress.global.ssl.fastly.net/"],["app.infotechnology.com/","https://app.infotechnology.com/"],["apple1.willemvisser.co.za/","https://apple1.willemvisser.co.za/"],["avcvfgte-17676043.codehs.me/index.html","https://avcvfgte-17676043.codehs.me/index.html"],["babybee.tcogpcal.org/","https://babybee.tcogpcal.org/"],["badge-17676354.codehs.me/index.html","https://badge-17676354.codehs.me/index.html"],["bean.freetls.fastly.net/","https://bean.freetls.fastly.net/"],["bob-nolanbetter.wasmer.app/","https://bob-nolanbetter.wasmer.app/"],["boredonasndkf.global.ssl.fastly.net/","https://boredonasndkf.global.ssl.fastly.net/"],["brainrot-88-17246223.codehs.me/index.html","https://brainrot-88-17246223.codehs.me/index.html"],["buy.gpu74.ru/","https://buy.gpu74.ru/"],["cloudgamer.sansiscool58170.workers.dev/","https://cloudgamer.sansiscool58170.workers.dev/"],["crimsonviper8605.codehs.me/","https://crimsonviper8605.codehs.me/"],["deer-club-17246500.codehs.me/","https://deer-club-17246500.codehs.me/"],["djfsda-17675920.codehs.me/index.html","https://djfsda-17675920.codehs.me/index.html"],["dsafdvc-17675927.codehs.me/index.html","https://dsafdvc-17675927.codehs.me/index.html"],["duckinggreat.sansiscool58170.workers.dev/","https://duckinggreat.sansiscool58170.workers.dev/"],["educational.radissontucson.com/","https://educational.radissontucson.com/"],["extrememath.cyou/","https://extrememath.cyou/"],["extrememath.icu/","https://extrememath.icu/"],["ffffff-17676319.codehs.me/index.html","https://ffffff-17676319.codehs.me/index.html"],["full.boxathome.net/","https://full.boxathome.net/"],["funni-steam-web-17246226.codehs.me/index.html","https://funni-steam-web-17246226.codehs.me/index.html"],["galacticnetwork.github.io/SurfTheWeb-V3","https://galacticnetwork.github.io/SurfTheWeb-V3"],["github-guthib-17246489.codehs.me/","https://github-guthib-17246489.codehs.me/"],["goob-17245597.codehs.me/","https://goob-17245597.codehs.me/"],["googlegames.freetls.fastly.net/","https://googlegames.freetls.fastly.net/"],["grandmanoob.codehs.me/","https://grandmanoob.codehs.me/"],["hi-17246585.codehs.me/","https://hi-17246585.codehs.me/"],["holyubofficial.net/","https://holyubofficial.net/"],["homework-gaming-17245536.codehs.me/","https://homework-gaming-17245536.codehs.me/"],["hours.newlifesanctuarychurch.com/","https://hours.newlifesanctuarychurch.com/"],["howtomath.org/","https://howtomath.org/"],["indexkool-17244295.codehs.me/index.html","https://indexkool-17244295.codehs.me/index.html"],["info.antipodeantarot.com/","https://info.antipodeantarot.com/"],["is-blud-einstein-17246524.codehs.me/","https://is-blud-einstein-17246524.codehs.me/"],["ksd-resource.sababat.com/","https://ksd-resource.sababat.com/"],["lhabelyhfjhd.wasmer.app/","https://lhabelyhfjhd.wasmer.app/"],["light-coffee-o3mwx39zv0.edgeone.app/","https://light-coffee-o3mwx39zv0.edgeone.app/"],["mark-i-made-a-stake-17245582.codehs.me/","https://mark-i-made-a-stake-17245582.codehs.me/"],["mathland.wiki/","https://mathland.wiki/"],["mathlessonsproski-17246090.codehs.me/index.html","https://mathlessonsproski-17246090.codehs.me/index.html"],["mydogwasinnnn.vercel.app/static","https://mydogwasinnnn.vercel.app/static"],["nana.rammer.boiso.ar/","https://nana.rammer.boiso.ar/"],["new-sandbox-program-10-17799238.codehs.me/index.html","https://new-sandbox-program-10-17799238.codehs.me/index.html"],["new-sandbox-program-11-17799243.codehs.me/index.html","https://new-sandbox-program-11-17799243.codehs.me/index.html"],["new-sandbox-program-2-17799149.codehs.me/index.html","https://new-sandbox-program-2-17799149.codehs.me/index.html"],["new-sandbox-program-3-17799177.codehs.me/index.html","https://new-sandbox-program-3-17799177.codehs.me/index.html"],["new-sandbox-program-4-17799197.codehs.me/index.html","https://new-sandbox-program-4-17799197.codehs.me/index.html"],["new-sandbox-program-5-17799199.codehs.me/index.html","https://new-sandbox-program-5-17799199.codehs.me/index.html"],["new-sandbox-program-6-17799201.codehs.me/index.html","https://new-sandbox-program-6-17799201.codehs.me/index.html"],["new-sandbox-program-7-17799231.codehs.me/index.html","https://new-sandbox-program-7-17799231.codehs.me/index.html"],["new-sandbox-program-8-17245465.codehs.me/","https://new-sandbox-program-8-17245465.codehs.me/"],["new-sandbox-program-8-17799233.codehs.me/index.html","https://new-sandbox-program-8-17799233.codehs.me/index.html"],["new-sandbox-program-9-17245499.codehs.me/","https://new-sandbox-program-9-17245499.codehs.me/"],["new-sandbox-program-9-17799234.codehs.me/index.html","https://new-sandbox-program-9-17799234.codehs.me/index.html"],["nolaniscool.wasmer.app/","https://nolaniscool.wasmer.app/"],["notdominospizzeria.fluxus.org/","https://notdominospizzeria.fluxus.org/"],["object-fighters-is-peak-17245571.codehs.me/","https://object-fighters-is-peak-17245571.codehs.me/"],["ohio-apply-lat-17246212.codehs.me/index.html","https://ohio-apply-lat-17246212.codehs.me/index.html"],["onedomain.info/","https://onedomain.info/"],["play.jimmyqrg.com/","https://play.jimmyqrg.com/"],["play.schooloqy.com/","https://play.schooloqy.com/"],["pneumonoultramicroscopicsilicovolcanoconiosis-67-17245612.codehs.me/","https://pneumonoultramicroscopicsilicovolcanoconiosis-67-17245612.codehs.me/"],["poki-v2.global.ssl.fastly.net/en/crazy-games","https://poki-v2.global.ssl.fastly.net/en/crazy-games"],["prices.gpu74.ru/","https://prices.gpu74.ru/"],["rm.triway.live/","https://rm.triway.live/"],["roblock-is-life-67-17245755.codehs.me/","https://roblock-is-life-67-17245755.codehs.me/"],["sigma-skull-emoji-17246216.codehs.me/index.html","https://sigma-skull-emoji-17246216.codehs.me/index.html"],["six-seven-five-five-17246203.codehs.me/index.html","https://six-seven-five-five-17246203.codehs.me/index.html"],["slingshotswitch-17245605.codehs.me/","https://slingshotswitch-17245605.codehs.me/"],["spar-kart-sunday-17245573.codehs.me/","https://spar-kart-sunday-17245573.codehs.me/"],["study.infotechnology.com/","https://study.infotechnology.com/"],["surrounding-scarlet-z7exyzvhbv.edgeone.app/","https://surrounding-scarlet-z7exyzvhbv.edgeone.app/"],["town.charlestonwvhotel.com/","https://town.charlestonwvhotel.com/"],["trombone-is-da-best-intrument-17245404.codehs.me/","https://trombone-is-da-best-intrument-17245404.codehs.me/"],["turkiyrefdhsjafs-17675972.codehs.me/index.html","https://turkiyrefdhsjafs-17675972.codehs.me/index.html"],["v2202508297531378155.powersrv.de/","https://v2202508297531378155.powersrv.de/"],["vacation.briaquaticcabinets.com/","https://vacation.briaquaticcabinets.com/"],["vcb-17676770.codehs.me/index.html","https://vcb-17676770.codehs.me/index.html"],["veryhardmathproblems.weebly.com/","https://veryhardmathproblems.weebly.com/"],["wasd-17676779.codehs.me/index.html","https://wasd-17676779.codehs.me/index.html"],["what-is-this-diddyblud-doing-on-a-calculator-17246519.codehs.me/","https://what-is-this-diddyblud-doing-on-a-calculator-17246519.codehs.me/"],["wiki.schooloqy.com/","https://wiki.schooloqy.com/"],["wolfunblock.fishoho.com/","https://wolfunblock.fishoho.com/"],["wondering.superportret.ru/","https://wondering.superportret.ru/"],["www.nolanandgraysongames.site/","https://www.nolanandgraysongames.site/"],["www.nolanandgraysongames.xyz/","https://www.nolanandgraysongames.xyz/"],["tjrhbfbqjc.bestprograms4kids.com.au/","http://tjrhbfbqjc.bestprograms4kids.com.au/"],["welearn.fin-tech.com/","http://welearn.fin-tech.com/"],["67818-bro.strangled.net/","https://67818-bro.strangled.net/"],["addition.syueyuan.com/","https://addition.syueyuan.com/"],["aisd.mathforkids.buzz/","https://aisd.mathforkids.buzz/"],["algebra.celebsplay.com/","https://algebra.celebsplay.com/"],["cfisd.mathforkids.buzz/","https://cfisd.mathforkids.buzz/"],["domainexpansioninfinitediamonds.global.ssl.fastly.net/cloud-games/typ...","https://domainexpansioninfinitediamonds.global.ssl.fastly.net/cloud-games/type/casual.html"],["ela.mathforkids.buzz/","https://ela.mathforkids.buzz/"],["freediddy.buzz/","https://freediddy.buzz/"],["freepuff.buzz/","https://freepuff.buzz/"],["gyattmath.buzz/","https://gyattmath.buzz/"],["hardenglish.buzz/","https://hardenglish.buzz/"],["hardmath.buzz/","https://hardmath.buzz/"],["hisd.mathforkids.buzz/","https://hisd.mathforkids.buzz/"],["home.bostoncareercounselor.com/","https://home.bostoncareercounselor.com/"],["home.gaudencio.net.br/","https://home.gaudencio.net.br/"],["info.bostoncareercounselor.com/","https://info.bostoncareercounselor.com/"],["jimscience9912.firebaseapp.com/","https://jimscience9912.firebaseapp.com/"],["kinegame-accelerator.global.ssl.fastly.net/","https://kinegame-accelerator.global.ssl.fastly.net/"],["kyleissosigma.freetls.fastly.net/","https://kyleissosigma.freetls.fastly.net/"],["lausd.mathforkids.buzz/","https://lausd.mathforkids.buzz/"],["linen.freeddns.org/","https://linen.freeddns.org/"],["math.bostoncareercounselor.com/","https://math.bostoncareercounselor.com/"],["mathprofession.buzz/","https://mathprofession.buzz/"],["minoritymath.buzz/","https://minoritymath.buzz/"],["php.global.ssl.fastly.net/tag/browser_67","https://php.global.ssl.fastly.net/tag/browser_67"],["read.bostoncareercounselor.com/","https://read.bostoncareercounselor.com/"],["science.mathforkids.buzz/","https://science.mathforkids.buzz/"],["scienceclasswork.webredirect.org/","https://scienceclasswork.webredirect.org/"],["secured.freetls.fastly.net/play.html","https://secured.freetls.fastly.net/play.html"],["star.cbass92.org/","https://star.cbass92.org/"],["sunsett.icu/","https://sunsett.icu/"],["tools.math.com.de/","https://tools.math.com.de/"],["veryhardenglishproblems.weebly.com/","https://veryhardenglishproblems.weebly.com/"],["dms.dms.dms.tcloud.my/","http://dms.dms.dms.tcloud.my/"],["thisisthe.bestprogramsforkids.com/","https://thisisthe.bestprogramsforkids.com/"],["edu.gtec.ar/","https://edu.gtec.ar/"],["getbacksoon.gtec.ar/","https://getbacksoon.gtec.ar/"],["hiii.gtec.ar/","https://hiii.gtec.ar/"],["shiestysosa.gtec.ar/","https://shiestysosa.gtec.ar/"],["sillybeenmoneymaking.gtec.ar/","https://sillybeenmoneymaking.gtec.ar/"],["edusilly.kmtrade.ar/","https://edusilly.kmtrade.ar/"],["impontop.kmtrade.ar/","https://impontop.kmtrade.ar/"],["bigbrrrr.thelich.monster/","https://bigbrrrr.thelich.monster/"],["nohesi.thelich.monster/","https://nohesi.thelich.monster/"],["spinner.thelich.monster/","https://spinner.thelich.monster/"],["english.next-education-learning.online/","https://english.next-education-learning.online/"],["noblo.cc/","https://noblo.cc/"],["securelymaster2000934.greatgiftlists.com/","https://securelymaster2000934.greatgiftlists.com/"],["sciencemath.gtec.ar/","https://sciencemath.gtec.ar/"],["sunsett.cc/","https://sunsett.cc/"],["playernation.superportret.ru/","https://playernation.superportret.ru/"],["powers.superportret.ru/","https://powers.superportret.ru/"],["tuffle.infotechnology.com/","https://tuffle.infotechnology.com/"],["infoo.infotechnology.com/","https://infoo.infotechnology.com/"],["s3.amazonaws.com/prageru-server/mathematics.html?id=556","https://s3.amazonaws.com/prageru-server/mathematics.html?id=556"],["okvrlsgvsq.pcrage2000.com/","http://okvrlsgvsq.pcrage2000.com/"],["l.global.ssl.fastly.net/","https://l.global.ssl.fastly.net/"],["followmytiktok.centromariapolis.cl/","https://followmytiktok.centromariapolis.cl/"],["hotterthenmay8th.centromariapolis.cl/","https://hotterthenmay8th.centromariapolis.cl/"],["sosa.centromariapolis.cl/","https://sosa.centromariapolis.cl/"],["straight8.centromariapolis.cl/","https://straight8.centromariapolis.cl/"],["weonhim.centromariapolis.cl/","https://weonhim.centromariapolis.cl/"],["smartbio.kelownaembroidery.ca/","https://smartbio.kelownaembroidery.ca/"],["fastgeo.eclipsecastellon.net/","https://fastgeo.eclipsecastellon.net/"],["solidpoems.eclipsecastellon.net/","https://solidpoems.eclipsecastellon.net/"],["easygeo.eclipsecastellon.net/","https://easygeo.eclipsecastellon.net/"],["bigmoney.cc/","https://bigmoney.cc/"],["businessschool.cc/","https://businessschool.cc/"],["crypto-college.cc/","https://crypto-college.cc/"],["fulcrumtheatreinc.com/","https://fulcrumtheatreinc.com/"],["homeworkhelp.cc/","https://homeworkhelp.cc/"],["info.videnom.com/","https://info.videnom.com/"],["sciencenews.cc/","https://sciencenews.cc/"],["www.khanacademy.org/computer-programming/all-about-polar-bears/616403...","https://www.khanacademy.org/computer-programming/all-about-polar-bears/6164033108819968"],["www.khanacademy.org/computer-programming/all-about-polar-bears/471678...","https://www.khanacademy.org/computer-programming/all-about-polar-bears/4716787037224960"],["www.khanacademy.org/computer-programming/all-about-polar-bears/478147...","https://www.khanacademy.org/computer-programming/all-about-polar-bears/4781473103462400"],["0n38.s3.amazonaws.com/index.html","https://0n38.s3.amazonaws.com/index.html"],["0n38.s3.dualstack.us-east-1.amazonaws.com/index.html","https://0n38.s3.dualstack.us-east-1.amazonaws.com/index.html"],["0n38.s3.us-east-1.amazonaws.com/index.html","https://0n38.s3.us-east-1.amazonaws.com/index.html"],["4apg.s3.amazonaws.com/index.html","https://4apg.s3.amazonaws.com/index.html"],["4apg.s3.dualstack.us-east-1.amazonaws.com/index.html","https://4apg.s3.dualstack.us-east-1.amazonaws.com/index.html"],["4apg.s3.us-east-1.amazonaws.com/index.html","https://4apg.s3.us-east-1.amazonaws.com/index.html"],["7pfp.s3.amazonaws.com/index.html","https://7pfp.s3.amazonaws.com/index.html"],["7pfp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://7pfp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["7pfp.s3.us-east-1.amazonaws.com/index.html","https://7pfp.s3.us-east-1.amazonaws.com/index.html"],["a4cxjc3.s3.amazonaws.com/index.html","https://a4cxjc3.s3.amazonaws.com/index.html"],["a4cxjc3.s3.dualstack.us-east-1.amazonaws.com/index.html","https://a4cxjc3.s3.dualstack.us-east-1.amazonaws.com/index.html"],["a4cxjc3.s3.us-east-1.amazonaws.com/index.html","https://a4cxjc3.s3.us-east-1.amazonaws.com/index.html"],["aether-education.s3.amazonaws.com/index.html","https://aether-education.s3.amazonaws.com/index.html"],["aether-education.s3.dualstack.us-east-1.amazonaws.com/index.html","https://aether-education.s3.dualstack.us-east-1.amazonaws.com/index.html"],["aether-education.s3.us-east-1.amazonaws.com/index.html","https://aether-education.s3.us-east-1.amazonaws.com/index.html"],["aether-schools.s3.amazonaws.com/index.html","https://aether-schools.s3.amazonaws.com/index.html"],["aether-schools.s3.dualstack.us-east-1.amazonaws.com/index.html","https://aether-schools.s3.dualstack.us-east-1.amazonaws.com/index.html"],["aether-schools.s3.us-east-1.amazonaws.com/index.html","https://aether-schools.s3.us-east-1.amazonaws.com/index.html"],["ailo239.s3.amazonaws.com/index.html","https://ailo239.s3.amazonaws.com/index.html"],["ailo239.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ailo239.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ailo239.s3.us-east-1.amazonaws.com/index.html","https://ailo239.s3.us-east-1.amazonaws.com/index.html"],["antixticy.s3.amazonaws.com/index.html","https://antixticy.s3.amazonaws.com/index.html"],["antixticy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://antixticy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["antixticy.s3.us-east-1.amazonaws.com/index.html","https://antixticy.s3.us-east-1.amazonaws.com/index.html"],["apbio.s3.amazonaws.com/index.html","https://apbio.s3.amazonaws.com/index.html"],["apbio.s3.dualstack.us-east-1.amazonaws.com/index.html","https://apbio.s3.dualstack.us-east-1.amazonaws.com/index.html"],["apchem.s3.amazonaws.com/index.html","https://apchem.s3.amazonaws.com/index.html"],["apchem.s3.dualstack.us-east-1.amazonaws.com/index.html","https://apchem.s3.dualstack.us-east-1.amazonaws.com/index.html"],["apgov.s3.amazonaws.com/index.html","https://apgov.s3.amazonaws.com/index.html"],["apgov.s3.dualstack.us-east-1.amazonaws.com/index.html","https://apgov.s3.dualstack.us-east-1.amazonaws.com/index.html"],["aphistory.s3.amazonaws.com/index.html","https://aphistory.s3.amazonaws.com/index.html"],["aphistory.s3.dualstack.us-east-1.amazonaws.com/index.html","https://aphistory.s3.dualstack.us-east-1.amazonaws.com/index.html"],["aphistory.s3.us-east-1.amazonaws.com/index.html","https://aphistory.s3.us-east-1.amazonaws.com/index.html"],["appsych.s3.amazonaws.com/index.html","https://appsych.s3.amazonaws.com/index.html"],["appsych.s3.dualstack.us-east-1.amazonaws.com/index.html","https://appsych.s3.dualstack.us-east-1.amazonaws.com/index.html"],["apstat.s3.amazonaws.com/index.html","https://apstat.s3.amazonaws.com/index.html"],["apstat.s3.dualstack.us-east-1.amazonaws.com/index.html","https://apstat.s3.dualstack.us-east-1.amazonaws.com/index.html"],["b7u6.s3.amazonaws.com/index.html","https://b7u6.s3.amazonaws.com/index.html"],["b7u6.s3.dualstack.us-east-1.amazonaws.com/index.html","https://b7u6.s3.dualstack.us-east-1.amazonaws.com/index.html"],["b7u6.s3.us-east-1.amazonaws.com/index.html","https://b7u6.s3.us-east-1.amazonaws.com/index.html"],["bhow.s3.amazonaws.com/index.html","https://bhow.s3.amazonaws.com/index.html"],["bhow.s3.dualstack.us-east-1.amazonaws.com/index.html","https://bhow.s3.dualstack.us-east-1.amazonaws.com/index.html"],["bhow.s3.us-east-1.amazonaws.com/index.html","https://bhow.s3.us-east-1.amazonaws.com/index.html"],["blooketassets.s3-us-east-2.amazonaws.com/index.html","https://blooketassets.s3-us-east-2.amazonaws.com/index.html"],["blooketassets.s3-website.us-east-2.amazonaws.com/index.html","https://blooketassets.s3-website.us-east-2.amazonaws.com/index.html"],["blooketassets.s3.amazonaws.com/index.html","https://blooketassets.s3.amazonaws.com/index.html"],["blooketassets.s3.dualstack.us-east-2.amazonaws.com/index.html","https://blooketassets.s3.dualstack.us-east-2.amazonaws.com/index.html"],["blooketassets.s3.us-east-2.amazonaws.com/index.html","https://blooketassets.s3.us-east-2.amazonaws.com/index.html"],["brightschooling.s3.amazonaws.com/index.html","https://brightschooling.s3.amazonaws.com/index.html"],["brightschooling.s3.dualstack.us-east-1.amazonaws.com/index.html","https://brightschooling.s3.dualstack.us-east-1.amazonaws.com/index.html"],["brightschooling.s3.us-east-1.amazonaws.com/index.html","https://brightschooling.s3.us-east-1.amazonaws.com/index.html"],["budge-s3explorer.s3.amazonaws.com/index.html","https://budge-s3explorer.s3.amazonaws.com/index.html"],["budge-s3explorer.s3.dualstack.us-east-1.amazonaws.com/index.html","https://budge-s3explorer.s3.dualstack.us-east-1.amazonaws.com/index.html"],["budge-s3explorer.s3.us-east-1.amazonaws.com/index.html","https://budge-s3explorer.s3.us-east-1.amazonaws.com/index.html"],["bulldebut.s3.amazonaws.com/index.html","https://bulldebut.s3.amazonaws.com/index.html"],["bulldebut.s3.dualstack.us-east-1.amazonaws.com/index.html","https://bulldebut.s3.dualstack.us-east-1.amazonaws.com/index.html"],["bulldebut.s3.us-east-1.amazonaws.com/index.html","https://bulldebut.s3.us-east-1.amazonaws.com/index.html"],["bullisbest.s3.amazonaws.com/index.html","https://bullisbest.s3.amazonaws.com/index.html"],["bullisbest.s3.dualstack.us-east-1.amazonaws.com/index.html","https://bullisbest.s3.dualstack.us-east-1.amazonaws.com/index.html"],["bullisbest.s3.us-east-1.amazonaws.com/index.html","https://bullisbest.s3.us-east-1.amazonaws.com/index.html"],["bullproxy.s3.amazonaws.com/index.html","https://bullproxy.s3.amazonaws.com/index.html"],["bullproxy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://bullproxy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["bullproxy.s3.us-east-1.amazonaws.com/index.html","https://bullproxy.s3.us-east-1.amazonaws.com/index.html"],["bullyt.s3.amazonaws.com/index.html","https://bullyt.s3.amazonaws.com/index.html"],["bullyt.s3.dualstack.us-east-1.amazonaws.com/index.html","https://bullyt.s3.dualstack.us-east-1.amazonaws.com/index.html"],["bullyt.s3.us-east-1.amazonaws.com/index.html","https://bullyt.s3.us-east-1.amazonaws.com/index.html"],["calc247.s3.amazonaws.com/index.html","https://calc247.s3.amazonaws.com/index.html"],["calc247.s3.dualstack.us-east-1.amazonaws.com/index.html","https://calc247.s3.dualstack.us-east-1.amazonaws.com/index.html"],["calc247.s3.us-east-1.amazonaws.com/index.html","https://calc247.s3.us-east-1.amazonaws.com/index.html"],["cat4z.s3.amazonaws.com/index.html","https://cat4z.s3.amazonaws.com/index.html"],["cat4z.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cat4z.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cat4z.s3.us-east-1.amazonaws.com/index.html","https://cat4z.s3.us-east-1.amazonaws.com/index.html"],["catclassgoat.s3.dualstack.us-east-1.amazonaws.com/index.html","https://catclassgoat.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cedarlearn.s3.amazonaws.com/index.html","https://cedarlearn.s3.amazonaws.com/index.html"],["cedarlearn.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cedarlearn.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cedarlearn.s3.us-east-1.amazonaws.com/index.html","https://cedarlearn.s3.us-east-1.amazonaws.com/index.html"],["cherri-s3-test.s3.amazonaws.com/index.html","https://cherri-s3-test.s3.amazonaws.com/index.html"],["cherri-s3-test.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cherri-s3-test.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cherri-s3-test.s3.us-east-1.amazonaws.com/index.html","https://cherri-s3-test.s3.us-east-1.amazonaws.com/index.html"],["cherrimath.s3.amazonaws.com/index.html","https://cherrimath.s3.amazonaws.com/index.html"],["cherrimath.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cherrimath.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cherrimath.s3.us-east-1.amazonaws.com/index.html","https://cherrimath.s3.us-east-1.amazonaws.com/index.html"],["cherrinotes.s3.amazonaws.com/index.html","https://cherrinotes.s3.amazonaws.com/index.html"],["cherrinotes.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cherrinotes.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cherrinotes.s3.us-east-1.amazonaws.com/index.html","https://cherrinotes.s3.us-east-1.amazonaws.com/index.html"],["cherrireading.s3.amazonaws.com/index.html","https://cherrireading.s3.amazonaws.com/index.html"],["cherrireading.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cherrireading.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cherrireading.s3.us-east-1.amazonaws.com/index.html","https://cherrireading.s3.us-east-1.amazonaws.com/index.html"],["christopher2.s3.amazonaws.com/index.html","https://christopher2.s3.amazonaws.com/index.html"],["christopher2.s3.dualstack.us-east-1.amazonaws.com/index.html","https://christopher2.s3.dualstack.us-east-1.amazonaws.com/index.html"],["christopher2.s3.us-east-1.amazonaws.com/index.html","https://christopher2.s3.us-east-1.amazonaws.com/index.html"],["christopher2u.s3.amazonaws.com/index.html","https://christopher2u.s3.amazonaws.com/index.html"],["christopher2u.s3.dualstack.us-east-1.amazonaws.com/index.html","https://christopher2u.s3.dualstack.us-east-1.amazonaws.com/index.html"],["christopher2u.s3.us-east-1.amazonaws.com/index.html","https://christopher2u.s3.us-east-1.amazonaws.com/index.html"],["chrri.s3.amazonaws.com/index.html","https://chrri.s3.amazonaws.com/index.html"],["chrri.s3.dualstack.us-east-1.amazonaws.com/index.html","https://chrri.s3.dualstack.us-east-1.amazonaws.com/index.html"],["chrri.s3.us-east-1.amazonaws.com/index.html","https://chrri.s3.us-east-1.amazonaws.com/index.html"],["chrry.s3.amazonaws.com/index.html","https://chrry.s3.amazonaws.com/index.html"],["chrry.s3.dualstack.us-east-1.amazonaws.com/index.html","https://chrry.s3.dualstack.us-east-1.amazonaws.com/index.html"],["chrry.s3.us-east-1.amazonaws.com/index.html","https://chrry.s3.us-east-1.amazonaws.com/index.html"],["chubbyverity.s3.dualstack.us-east-1.amazonaws.com/index.html","https://chubbyverity.s3.dualstack.us-east-1.amazonaws.com/index.html"],["chubbyverity.s3.us-east-1.amazonaws.com/index.html","https://chubbyverity.s3.us-east-1.amazonaws.com/index.html"],["classroomc47c1455.s3.dualstack.us-east-1.amazonaws.com/index.html","https://classroomc47c1455.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cleverlearning.s3.amazonaws.com/index.html","https://cleverlearning.s3.amazonaws.com/index.html"],["cleverlearning.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cleverlearning.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cleverlearning.s3.us-east-1.amazonaws.com/index.html","https://cleverlearning.s3.us-east-1.amazonaws.com/index.html"],["cworks.s3.amazonaws.com/index.html","https://cworks.s3.amazonaws.com/index.html"],["cworks.s3.dualstack.us-east-1.amazonaws.com/index.html","https://cworks.s3.dualstack.us-east-1.amazonaws.com/index.html"],["cworks.s3.us-east-1.amazonaws.com/index.html","https://cworks.s3.us-east-1.amazonaws.com/index.html"],["deltamath-demo.s3.dualstack.us-east-1.amazonaws.com/index.html","https://deltamath-demo.s3.dualstack.us-east-1.amazonaws.com/index.html"],["deltamath-demo.s3.us-east-1.amazonaws.com/index.html","https://deltamath-demo.s3.us-east-1.amazonaws.com/index.html"],["duwj.s3.amazonaws.com/index.html","https://duwj.s3.amazonaws.com/index.html"],["duwj.s3.dualstack.us-east-1.amazonaws.com/index.html","https://duwj.s3.dualstack.us-east-1.amazonaws.com/index.html"],["duwj.s3.us-east-1.amazonaws.com/index.html","https://duwj.s3.us-east-1.amazonaws.com/index.html"],["elahomework.s3-us-east-2.amazonaws.com/index.html","https://elahomework.s3-us-east-2.amazonaws.com/index.html"],["elahomework.s3.amazonaws.com/index.html","https://elahomework.s3.amazonaws.com/index.html"],["elahomework.s3.dualstack.us-east-2.amazonaws.com/index.html","https://elahomework.s3.dualstack.us-east-2.amazonaws.com/index.html"],["fernlinks.s3.amazonaws.com/index.html","https://fernlinks.s3.amazonaws.com/index.html"],["fernlinks.s3.dualstack.us-east-1.amazonaws.com/index.html","https://fernlinks.s3.dualstack.us-east-1.amazonaws.com/index.html"],["fernlinks.s3.us-east-1.amazonaws.com/index.html","https://fernlinks.s3.us-east-1.amazonaws.com/index.html"],["fhyd.s3.amazonaws.com/index.html","https://fhyd.s3.amazonaws.com/index.html"],["fhyd.s3.dualstack.us-east-1.amazonaws.com/index.html","https://fhyd.s3.dualstack.us-east-1.amazonaws.com/index.html"],["fhyd.s3.us-east-1.amazonaws.com/index.html","https://fhyd.s3.us-east-1.amazonaws.com/index.html"],["finallybull.s3.amazonaws.com/index.html","https://finallybull.s3.amazonaws.com/index.html"],["finallybull.s3.dualstack.us-east-1.amazonaws.com/index.html","https://finallybull.s3.dualstack.us-east-1.amazonaws.com/index.html"],["finallybull.s3.us-east-1.amazonaws.com/index.html","https://finallybull.s3.us-east-1.amazonaws.com/index.html"],["fnnx.s3.amazonaws.com/index.html","https://fnnx.s3.amazonaws.com/index.html"],["fnnx.s3.dualstack.us-east-1.amazonaws.com/index.html","https://fnnx.s3.dualstack.us-east-1.amazonaws.com/index.html"],["fnnx.s3.us-east-1.amazonaws.com/index.html","https://fnnx.s3.us-east-1.amazonaws.com/index.html"],["frnx.s3.amazonaws.com/index.html","https://frnx.s3.amazonaws.com/index.html"],["frnx.s3.dualstack.us-east-1.amazonaws.com/index.html","https://frnx.s3.dualstack.us-east-1.amazonaws.com/index.html"],["frnx.s3.us-east-1.amazonaws.com/index.html","https://frnx.s3.us-east-1.amazonaws.com/index.html"],["fsou.s3.amazonaws.com/index.html","https://fsou.s3.amazonaws.com/index.html"],["fsou.s3.dualstack.us-east-1.amazonaws.com/index.html","https://fsou.s3.dualstack.us-east-1.amazonaws.com/index.html"],["fsou.s3.us-east-1.amazonaws.com/index.html","https://fsou.s3.us-east-1.amazonaws.com/index.html"],["fyr3.s3.amazonaws.com/index.html","https://fyr3.s3.amazonaws.com/index.html"],["fyr3.s3.dualstack.us-east-1.amazonaws.com/index.html","https://fyr3.s3.dualstack.us-east-1.amazonaws.com/index.html"],["fyr3.s3.us-east-1.amazonaws.com/index.html","https://fyr3.s3.us-east-1.amazonaws.com/index.html"],["gfdd.s3.amazonaws.com/index.html","https://gfdd.s3.amazonaws.com/index.html"],["gfdd.s3.dualstack.us-east-1.amazonaws.com/index.html","https://gfdd.s3.dualstack.us-east-1.amazonaws.com/index.html"],["gfdd.s3.us-east-1.amazonaws.com/index.html","https://gfdd.s3.us-east-1.amazonaws.com/index.html"],["ghbw.s3.amazonaws.com/index.html","https://ghbw.s3.amazonaws.com/index.html"],["ghbw.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ghbw.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ghbw.s3.us-east-1.amazonaws.com/index.html","https://ghbw.s3.us-east-1.amazonaws.com/index.html"],["glimstudy.s3.amazonaws.com/index.html","https://glimstudy.s3.amazonaws.com/index.html"],["glimstudy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://glimstudy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["glimstudy.s3.us-east-1.amazonaws.com/index.html","https://glimstudy.s3.us-east-1.amazonaws.com/index.html"],["googleclass.s3.amazonaws.com/index.html","https://googleclass.s3.amazonaws.com/index.html"],["googleclass.s3.dualstack.us-east-1.amazonaws.com/index.html","https://googleclass.s3.dualstack.us-east-1.amazonaws.com/index.html"],["googleclass.s3.us-east-1.amazonaws.com/index.html","https://googleclass.s3.us-east-1.amazonaws.com/index.html"],["graphing-calculator.s3.amazonaws.com/index.html","https://graphing-calculator.s3.amazonaws.com/index.html"],["graphing-calculator.s3.dualstack.us-east-1.amazonaws.com/index.html","https://graphing-calculator.s3.dualstack.us-east-1.amazonaws.com/index.html"],["graphing-calculator.s3.us-east-1.amazonaws.com/index.html","https://graphing-calculator.s3.us-east-1.amazonaws.com/index.html"],["gsuiteclassroom.s3.amazonaws.com/index.html","https://gsuiteclassroom.s3.amazonaws.com/index.html"],["gsuiteclassroom.s3.dualstack.us-east-1.amazonaws.com/index.html","https://gsuiteclassroom.s3.dualstack.us-east-1.amazonaws.com/index.html"],["gsuiteclassroom.s3.us-east-1.amazonaws.com/index.html","https://gsuiteclassroom.s3.us-east-1.amazonaws.com/index.html"],["h7ww.s3.amazonaws.com/index.html","https://h7ww.s3.amazonaws.com/index.html"],["h7ww.s3.dualstack.us-east-1.amazonaws.com/index.html","https://h7ww.s3.dualstack.us-east-1.amazonaws.com/index.html"],["h7ww.s3.us-east-1.amazonaws.com/index.html","https://h7ww.s3.us-east-1.amazonaws.com/index.html"],["hihu249.s3.amazonaws.com/index.html","https://hihu249.s3.amazonaws.com/index.html"],["hihu249.s3.dualstack.us-east-1.amazonaws.com/index.html","https://hihu249.s3.dualstack.us-east-1.amazonaws.com/index.html"],["hihu249.s3.us-east-1.amazonaws.com/index.html","https://hihu249.s3.us-east-1.amazonaws.com/index.html"],["hur0.s3.amazonaws.com/index.html","https://hur0.s3.amazonaws.com/index.html"],["hur0.s3.dualstack.us-east-1.amazonaws.com/index.html","https://hur0.s3.dualstack.us-east-1.amazonaws.com/index.html"],["hur0.s3.us-east-1.amazonaws.com/index.html","https://hur0.s3.us-east-1.amazonaws.com/index.html"],["id5y.s3.amazonaws.com/index.html","https://id5y.s3.amazonaws.com/index.html"],["id5y.s3.dualstack.us-east-1.amazonaws.com/index.html","https://id5y.s3.dualstack.us-east-1.amazonaws.com/index.html"],["id5y.s3.us-east-1.amazonaws.com/index.html","https://id5y.s3.us-east-1.amazonaws.com/index.html"],["ilovecalc.s3.amazonaws.com/index.html","https://ilovecalc.s3.amazonaws.com/index.html"],["ilovecalc.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ilovecalc.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ilovecalc.s3.us-east-1.amazonaws.com/index.html","https://ilovecalc.s3.us-east-1.amazonaws.com/index.html"],["ironsnout.s3.amazonaws.com/index.html","https://ironsnout.s3.amazonaws.com/index.html"],["ironsnout.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ironsnout.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ironsnout.s3.us-east-1.amazonaws.com/index.html","https://ironsnout.s3.us-east-1.amazonaws.com/index.html"],["iuyt.s3.amazonaws.com/index.html","https://iuyt.s3.amazonaws.com/index.html"],["iuyt.s3.dualstack.us-east-1.amazonaws.com/index.html","https://iuyt.s3.dualstack.us-east-1.amazonaws.com/index.html"],["iuyt.s3.us-east-1.amazonaws.com/index.html","https://iuyt.s3.us-east-1.amazonaws.com/index.html"],["ixlsucks.s3.amazonaws.com/index.html","https://ixlsucks.s3.amazonaws.com/index.html"],["ixlsucks.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ixlsucks.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ixlsucks.s3.us-east-1.amazonaws.com/index.html","https://ixlsucks.s3.us-east-1.amazonaws.com/index.html"],["j2zp.s3.amazonaws.com/index.html","https://j2zp.s3.amazonaws.com/index.html"],["j2zp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://j2zp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["j2zp.s3.us-east-1.amazonaws.com/index.html","https://j2zp.s3.us-east-1.amazonaws.com/index.html"],["jax219.s3.amazonaws.com/index.html","https://jax219.s3.amazonaws.com/index.html"],["jax219.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jax219.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jax219.s3.us-east-1.amazonaws.com/index.html","https://jax219.s3.us-east-1.amazonaws.com/index.html"],["jhds.s3.amazonaws.com/index.html","https://jhds.s3.amazonaws.com/index.html"],["jhds.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jhds.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jhds.s3.us-east-1.amazonaws.com/index.html","https://jhds.s3.us-east-1.amazonaws.com/index.html"],["jiul259.s3.amazonaws.com/index.html","https://jiul259.s3.amazonaws.com/index.html"],["jiul259.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jiul259.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jiul259.s3.us-east-1.amazonaws.com/index.html","https://jiul259.s3.us-east-1.amazonaws.com/index.html"],["jknb.s3.amazonaws.com/index.html","https://jknb.s3.amazonaws.com/index.html"],["jknb.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jknb.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jknb.s3.us-east-1.amazonaws.com/index.html","https://jknb.s3.us-east-1.amazonaws.com/index.html"],["jkss.s3.amazonaws.com/index.html","https://jkss.s3.amazonaws.com/index.html"],["jkss.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jkss.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jkss.s3.us-east-1.amazonaws.com/index.html","https://jkss.s3.us-east-1.amazonaws.com/index.html"],["jlkl.s3.amazonaws.com/index.html","https://jlkl.s3.amazonaws.com/index.html"],["jlkl.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jlkl.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jlkl.s3.us-east-1.amazonaws.com/index.html","https://jlkl.s3.us-east-1.amazonaws.com/index.html"],["joachoa179.s3.amazonaws.com/index.html","https://joachoa179.s3.amazonaws.com/index.html"],["joachoa179.s3.dualstack.us-east-1.amazonaws.com/index.html","https://joachoa179.s3.dualstack.us-east-1.amazonaws.com/index.html"],["joachoa179.s3.us-east-1.amazonaws.com/index.html","https://joachoa179.s3.us-east-1.amazonaws.com/index.html"],["jomr.s3.amazonaws.com/index.html","https://jomr.s3.amazonaws.com/index.html"],["jomr.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jomr.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jomr.s3.us-east-1.amazonaws.com/index.html","https://jomr.s3.us-east-1.amazonaws.com/index.html"],["jse72q6.s3.amazonaws.com/index.html","https://jse72q6.s3.amazonaws.com/index.html"],["jse72q6.s3.dualstack.us-east-1.amazonaws.com/index.html","https://jse72q6.s3.dualstack.us-east-1.amazonaws.com/index.html"],["jse72q6.s3.us-east-1.amazonaws.com/index.html","https://jse72q6.s3.us-east-1.amazonaws.com/index.html"],["kahootmath.s3.amazonaws.com/index.html","https://kahootmath.s3.amazonaws.com/index.html"],["kahootmath.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kahootmath.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kahootmath.s3.us-east-1.amazonaws.com/index.html","https://kahootmath.s3.us-east-1.amazonaws.com/index.html"],["kbpd.s3.amazonaws.com/index.html","https://kbpd.s3.amazonaws.com/index.html"],["kbpd.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kbpd.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kbpd.s3.us-east-1.amazonaws.com/index.html","https://kbpd.s3.us-east-1.amazonaws.com/index.html"],["kitebrowser.s3.amazonaws.com/index.html","https://kitebrowser.s3.amazonaws.com/index.html"],["kitebrowser.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kitebrowser.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kitebrowser.s3.us-east-1.amazonaws.com/index.html","https://kitebrowser.s3.us-east-1.amazonaws.com/index.html"],["kiteduapp.s3.amazonaws.com/index.html","https://kiteduapp.s3.amazonaws.com/index.html"],["kiteduapp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kiteduapp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kiteduapp.s3.us-east-1.amazonaws.com/index.html","https://kiteduapp.s3.us-east-1.amazonaws.com/index.html"],["kitedumirror.s3.amazonaws.com/index.html","https://kitedumirror.s3.amazonaws.com/index.html"],["kitedumirror.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kitedumirror.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kitedumirror.s3.us-east-1.amazonaws.com/index.html","https://kitedumirror.s3.us-east-1.amazonaws.com/index.html"],["kiteduweb.s3.amazonaws.com/index.html","https://kiteduweb.s3.amazonaws.com/index.html"],["kiteduweb.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kiteduweb.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kiteduweb.s3.us-east-1.amazonaws.com/index.html","https://kiteduweb.s3.us-east-1.amazonaws.com/index.html"],["kitepr0xy.s3.amazonaws.com/index.html","https://kitepr0xy.s3.amazonaws.com/index.html"],["kitepr0xy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kitepr0xy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kitepr0xy.s3.us-east-1.amazonaws.com/index.html","https://kitepr0xy.s3.us-east-1.amazonaws.com/index.html"],["kitestudy.s3.amazonaws.com/index.html","https://kitestudy.s3.amazonaws.com/index.html"],["kitestudy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kitestudy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kitestudy.s3.us-east-1.amazonaws.com/index.html","https://kitestudy.s3.us-east-1.amazonaws.com/index.html"],["kldh.s3.amazonaws.com/index.html","https://kldh.s3.amazonaws.com/index.html"],["kldh.s3.dualstack.us-east-1.amazonaws.com/index.html","https://kldh.s3.dualstack.us-east-1.amazonaws.com/index.html"],["kldh.s3.us-east-1.amazonaws.com/index.html","https://kldh.s3.us-east-1.amazonaws.com/index.html"],["lcfy.s3.amazonaws.com/index.html","https://lcfy.s3.amazonaws.com/index.html"],["lcfy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lcfy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lcfy.s3.us-east-1.amazonaws.com/index.html","https://lcfy.s3.us-east-1.amazonaws.com/index.html"],["leeshawn.s3.amazonaws.com/index.html","https://leeshawn.s3.amazonaws.com/index.html"],["leeshawn.s3.dualstack.us-east-1.amazonaws.com/index.html","https://leeshawn.s3.dualstack.us-east-1.amazonaws.com/index.html"],["leeshawn.s3.us-east-1.amazonaws.com/index.html","https://leeshawn.s3.us-east-1.amazonaws.com/index.html"],["lessonbay.s3.amazonaws.com/index.html","https://lessonbay.s3.amazonaws.com/index.html"],["lessonbay.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lessonbay.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lessonbay.s3.us-east-1.amazonaws.com/index.html","https://lessonbay.s3.us-east-1.amazonaws.com/index.html"],["lessonpadweb.s3.amazonaws.com/index.html","https://lessonpadweb.s3.amazonaws.com/index.html"],["lessonpadweb.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lessonpadweb.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lessonpadweb.s3.us-east-1.amazonaws.com/index.html","https://lessonpadweb.s3.us-east-1.amazonaws.com/index.html"],["lgbq.s3.amazonaws.com/index.html","https://lgbq.s3.amazonaws.com/index.html"],["lgbq.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lgbq.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lgbq.s3.us-east-1.amazonaws.com/index.html","https://lgbq.s3.us-east-1.amazonaws.com/index.html"],["lmeyo.s3.amazonaws.com/index.html","https://lmeyo.s3.amazonaws.com/index.html"],["lmeyo.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lmeyo.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lmeyo.s3.us-east-1.amazonaws.com/index.html","https://lmeyo.s3.us-east-1.amazonaws.com/index.html"],["lsrelay-1.s3.amazonaws.com/index.html","https://lsrelay-1.s3.amazonaws.com/index.html"],["lsrelay-1.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lsrelay-1.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lsrelay-1.s3.us-east-1.amazonaws.com/index.html","https://lsrelay-1.s3.us-east-1.amazonaws.com/index.html"],["lsrelay-a.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lsrelay-a.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lsrelay-a.s3.us-east-1.amazonaws.com/index.html","https://lsrelay-a.s3.us-east-1.amazonaws.com/index.html"],["lsrelay-i.s3.amazonaws.com/index.html","https://lsrelay-i.s3.amazonaws.com/index.html"],["lsrelay-i.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lsrelay-i.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lsrelay-i.s3.us-east-1.amazonaws.com/index.html","https://lsrelay-i.s3.us-east-1.amazonaws.com/index.html"],["lsrelay-l.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lsrelay-l.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lsrelay-l.s3.us-east-1.amazonaws.com/index.html","https://lsrelay-l.s3.us-east-1.amazonaws.com/index.html"],["lucidestatic.s3.amazonaws.com/index.html","https://lucidestatic.s3.amazonaws.com/index.html"],["lucidestatic.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lucidestatic.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lucidestatic.s3.us-east-1.amazonaws.com/index.html","https://lucidestatic.s3.us-east-1.amazonaws.com/index.html"],["lucidetutoring.s3.amazonaws.com/index.html","https://lucidetutoring.s3.amazonaws.com/index.html"],["lucidetutoring.s3.dualstack.us-east-1.amazonaws.com/index.html","https://lucidetutoring.s3.dualstack.us-east-1.amazonaws.com/index.html"],["lucidetutoring.s3.us-east-1.amazonaws.com/index.html","https://lucidetutoring.s3.us-east-1.amazonaws.com/index.html"],["luminacorehi.s3.amazonaws.com/index.html","https://luminacorehi.s3.amazonaws.com/index.html"],["luminacorehi.s3.dualstack.us-east-1.amazonaws.com/index.html","https://luminacorehi.s3.dualstack.us-east-1.amazonaws.com/index.html"],["luminacorehi.s3.us-east-1.amazonaws.com/index.html","https://luminacorehi.s3.us-east-1.amazonaws.com/index.html"],["mathisgreataf.s3.amazonaws.com/index.html","https://mathisgreataf.s3.amazonaws.com/index.html"],["mathisgreataf.s3.dualstack.us-east-1.amazonaws.com/index.html","https://mathisgreataf.s3.dualstack.us-east-1.amazonaws.com/index.html"],["mathisgreataf.s3.us-east-1.amazonaws.com/index.html","https://mathisgreataf.s3.us-east-1.amazonaws.com/index.html"],["medf.s3.amazonaws.com/index.html","https://medf.s3.amazonaws.com/index.html"],["medf.s3.dualstack.us-east-1.amazonaws.com/index.html","https://medf.s3.dualstack.us-east-1.amazonaws.com/index.html"],["medf.s3.us-east-1.amazonaws.com/index.html","https://medf.s3.us-east-1.amazonaws.com/index.html"],["memorising.s3.amazonaws.com/index.html","https://memorising.s3.amazonaws.com/index.html"],["memorising.s3.dualstack.us-east-1.amazonaws.com/index.html","https://memorising.s3.dualstack.us-east-1.amazonaws.com/index.html"],["memorising.s3.us-east-1.amazonaws.com/index.html","https://memorising.s3.us-east-1.amazonaws.com/index.html"],["mistcalc.s3.amazonaws.com/index.html","https://mistcalc.s3.amazonaws.com/index.html"],["mistcalc.s3.dualstack.us-east-1.amazonaws.com/index.html","https://mistcalc.s3.dualstack.us-east-1.amazonaws.com/index.html"],["mistcalc.s3.us-east-1.amazonaws.com/index.html","https://mistcalc.s3.us-east-1.amazonaws.com/index.html"],["mistedu.s3.amazonaws.com/index.html","https://mistedu.s3.amazonaws.com/index.html"],["mistedu.s3.dualstack.us-east-1.amazonaws.com/index.html","https://mistedu.s3.dualstack.us-east-1.amazonaws.com/index.html"],["mistedu.s3.us-east-1.amazonaws.com/index.html","https://mistedu.s3.us-east-1.amazonaws.com/index.html"],["mistmac.s3.amazonaws.com/index.html","https://mistmac.s3.amazonaws.com/index.html"],["mistmac.s3.dualstack.us-east-1.amazonaws.com/index.html","https://mistmac.s3.dualstack.us-east-1.amazonaws.com/index.html"],["mistmac.s3.us-east-1.amazonaws.com/index.html","https://mistmac.s3.us-east-1.amazonaws.com/index.html"],["mistmath.s3.amazonaws.com/index.html","https://mistmath.s3.amazonaws.com/index.html"],["mistmath.s3.dualstack.us-east-1.amazonaws.com/index.html","https://mistmath.s3.dualstack.us-east-1.amazonaws.com/index.html"],["mistmath.s3.us-east-1.amazonaws.com/index.html","https://mistmath.s3.us-east-1.amazonaws.com/index.html"],["nebulathebest.s3.amazonaws.com/index.html","https://nebulathebest.s3.amazonaws.com/index.html"],["nebulathebest.s3.dualstack.us-east-1.amazonaws.com/index.html","https://nebulathebest.s3.dualstack.us-east-1.amazonaws.com/index.html"],["nebulathebest.s3.us-east-1.amazonaws.com/index.html","https://nebulathebest.s3.us-east-1.amazonaws.com/index.html"],["nocap-tr3j.s3.amazonaws.com/index.html","https://nocap-tr3j.s3.amazonaws.com/index.html"],["nocap-tr3j.s3.dualstack.us-east-1.amazonaws.com/index.html","https://nocap-tr3j.s3.dualstack.us-east-1.amazonaws.com/index.html"],["nocap-tr3j.s3.us-east-1.amazonaws.com/index.html","https://nocap-tr3j.s3.us-east-1.amazonaws.com/index.html"],["notebinderapp.s3.amazonaws.com/index.html","https://notebinderapp.s3.amazonaws.com/index.html"],["notebinderapp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://notebinderapp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["notebinderapp.s3.us-east-1.amazonaws.com/index.html","https://notebinderapp.s3.us-east-1.amazonaws.com/index.html"],["notegrove.s3.amazonaws.com/index.html","https://notegrove.s3.amazonaws.com/index.html"],["notegrove.s3.dualstack.us-east-1.amazonaws.com/index.html","https://notegrove.s3.dualstack.us-east-1.amazonaws.com/index.html"],["notegrove.s3.us-east-1.amazonaws.com/index.html","https://notegrove.s3.us-east-1.amazonaws.com/index.html"],["novacraftzone.s3.amazonaws.com/index.html","https://novacraftzone.s3.amazonaws.com/index.html"],["novacraftzone.s3.dualstack.us-east-1.amazonaws.com/index.html","https://novacraftzone.s3.dualstack.us-east-1.amazonaws.com/index.html"],["novacraftzone.s3.us-east-1.amazonaws.com/index.html","https://novacraftzone.s3.us-east-1.amazonaws.com/index.html"],["o7ry.s3.amazonaws.com/index.html","https://o7ry.s3.amazonaws.com/index.html"],["o7ry.s3.dualstack.us-east-1.amazonaws.com/index.html","https://o7ry.s3.dualstack.us-east-1.amazonaws.com/index.html"],["o7ry.s3.us-east-1.amazonaws.com/index.html","https://o7ry.s3.us-east-1.amazonaws.com/index.html"],["oic4.s3.amazonaws.com/index.html","https://oic4.s3.amazonaws.com/index.html"],["oic4.s3.dualstack.us-east-1.amazonaws.com/index.html","https://oic4.s3.dualstack.us-east-1.amazonaws.com/index.html"],["oic4.s3.us-east-1.amazonaws.com/index.html","https://oic4.s3.us-east-1.amazonaws.com/index.html"],["oiop.s3.amazonaws.com/index.html","https://oiop.s3.amazonaws.com/index.html"],["oiop.s3.dualstack.us-east-1.amazonaws.com/index.html","https://oiop.s3.dualstack.us-east-1.amazonaws.com/index.html"],["oiop.s3.us-east-1.amazonaws.com/index.html","https://oiop.s3.us-east-1.amazonaws.com/index.html"],["opiumbest.s3.amazonaws.com/index.html","https://opiumbest.s3.amazonaws.com/index.html"],["opiumbest.s3.dualstack.us-east-1.amazonaws.com/index.html","https://opiumbest.s3.dualstack.us-east-1.amazonaws.com/index.html"],["opiumbest.s3.us-east-1.amazonaws.com/index.html","https://opiumbest.s3.us-east-1.amazonaws.com/index.html"],["opiumbull.s3.amazonaws.com/index.html","https://opiumbull.s3.amazonaws.com/index.html"],["opiumbull.s3.dualstack.us-east-1.amazonaws.com/index.html","https://opiumbull.s3.dualstack.us-east-1.amazonaws.com/index.html"],["opiumbull.s3.us-east-1.amazonaws.com/index.html","https://opiumbull.s3.us-east-1.amazonaws.com/index.html"],["os4e.s3.amazonaws.com/index.html","https://os4e.s3.amazonaws.com/index.html"],["os4e.s3.dualstack.us-east-1.amazonaws.com/index.html","https://os4e.s3.dualstack.us-east-1.amazonaws.com/index.html"],["os4e.s3.us-east-1.amazonaws.com/index.html","https://os4e.s3.us-east-1.amazonaws.com/index.html"],["ow9bpeb.s3.amazonaws.com/index.html","https://ow9bpeb.s3.amazonaws.com/index.html"],["ow9bpeb.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ow9bpeb.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ow9bpeb.s3.us-east-1.amazonaws.com/index.html","https://ow9bpeb.s3.us-east-1.amazonaws.com/index.html"],["phtn.s3.amazonaws.com/index.html","https://phtn.s3.amazonaws.com/index.html"],["phtn.s3.dualstack.us-east-1.amazonaws.com/index.html","https://phtn.s3.dualstack.us-east-1.amazonaws.com/index.html"],["phtn.s3.us-east-1.amazonaws.com/index.html","https://phtn.s3.us-east-1.amazonaws.com/index.html"],["playernation.s3.amazonaws.com/index.html","https://playernation.s3.amazonaws.com/index.html"],["playernation.s3.dualstack.us-east-1.amazonaws.com/index.html","https://playernation.s3.dualstack.us-east-1.amazonaws.com/index.html"],["playernation.s3.us-east-1.amazonaws.com/index.html","https://playernation.s3.us-east-1.amazonaws.com/index.html"],["ptnx.s3.amazonaws.com/index.html","https://ptnx.s3.amazonaws.com/index.html"],["ptnx.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ptnx.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ptnx.s3.us-east-1.amazonaws.com/index.html","https://ptnx.s3.us-east-1.amazonaws.com/index.html"],["quietbirchstudy.s3.amazonaws.com/index.html","https://quietbirchstudy.s3.amazonaws.com/index.html"],["quietbirchstudy.s3.dualstack.us-east-1.amazonaws.com/index.html","https://quietbirchstudy.s3.dualstack.us-east-1.amazonaws.com/index.html"],["quietbirchstudy.s3.us-east-1.amazonaws.com/index.html","https://quietbirchstudy.s3.us-east-1.amazonaws.com/index.html"],["qwuo.s3.amazonaws.com/index.html","https://qwuo.s3.amazonaws.com/index.html"],["qwuo.s3.dualstack.us-east-1.amazonaws.com/index.html","https://qwuo.s3.dualstack.us-east-1.amazonaws.com/index.html"],["qwuo.s3.us-east-1.amazonaws.com/index.html","https://qwuo.s3.us-east-1.amazonaws.com/index.html"],["rahisbullsgoat.s3.amazonaws.com/index.html","https://rahisbullsgoat.s3.amazonaws.com/index.html"],["rahisbullsgoat.s3.dualstack.us-east-1.amazonaws.com/index.html","https://rahisbullsgoat.s3.dualstack.us-east-1.amazonaws.com/index.html"],["rahisbullsgoat.s3.us-east-1.amazonaws.com/index.html","https://rahisbullsgoat.s3.us-east-1.amazonaws.com/index.html"],["ralsei-nth1.s3.amazonaws.com/index.html","https://ralsei-nth1.s3.amazonaws.com/index.html"],["ralsei-nth1.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ralsei-nth1.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ralsei-nth1.s3.us-east-1.amazonaws.com/index.html","https://ralsei-nth1.s3.us-east-1.amazonaws.com/index.html"],["ralsei.s3.amazonaws.com/index.html","https://ralsei.s3.amazonaws.com/index.html"],["ralsei.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ralsei.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ralsei.s3.us-east-1.amazonaws.com/index.html","https://ralsei.s3.us-east-1.amazonaws.com/index.html"],["rtnm.s3.amazonaws.com/index.html","https://rtnm.s3.amazonaws.com/index.html"],["rtnm.s3.dualstack.us-east-1.amazonaws.com/index.html","https://rtnm.s3.dualstack.us-east-1.amazonaws.com/index.html"],["rtnm.s3.us-east-1.amazonaws.com/index.html","https://rtnm.s3.us-east-1.amazonaws.com/index.html"],["run3.s3.amazonaws.com/index.html","https://run3.s3.amazonaws.com/index.html"],["run3.s3.dualstack.us-east-1.amazonaws.com/index.html","https://run3.s3.dualstack.us-east-1.amazonaws.com/index.html"],["run3.s3.us-east-1.amazonaws.com/index.html","https://run3.s3.us-east-1.amazonaws.com/index.html"],["ryzn.s3.amazonaws.com/index.html","https://ryzn.s3.amazonaws.com/index.html"],["ryzn.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ryzn.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ryzn.s3.us-east-1.amazonaws.com/index.html","https://ryzn.s3.us-east-1.amazonaws.com/index.html"],["s3-us-east-2.amazonaws.com/index.html","https://s3-us-east-2.amazonaws.com/index.html"],["s3.amazonaws.com/index.html","https://s3.amazonaws.com/index.html"],["s3.dualstack.us-east-1.amazonaws.com/index.html","https://s3.dualstack.us-east-1.amazonaws.com/index.html"],["s3.dualstack.us-east-2.amazonaws.com/index.html","https://s3.dualstack.us-east-2.amazonaws.com/index.html"],["s3.us-east-1.amazonaws.com/index.html","https://s3.us-east-1.amazonaws.com/index.html"],["s3.us-east-2.amazonaws.com/index.html","https://s3.us-east-2.amazonaws.com/index.html"],["s3ef.s3.amazonaws.com/index.html","https://s3ef.s3.amazonaws.com/index.html"],["s3ef.s3.dualstack.us-east-1.amazonaws.com/index.html","https://s3ef.s3.dualstack.us-east-1.amazonaws.com/index.html"],["s3ef.s3.us-east-1.amazonaws.com/index.html","https://s3ef.s3.us-east-1.amazonaws.com/index.html"],["scholardesk.s3.amazonaws.com/index.html","https://scholardesk.s3.amazonaws.com/index.html"],["scholardesk.s3.dualstack.us-east-1.amazonaws.com/index.html","https://scholardesk.s3.dualstack.us-east-1.amazonaws.com/index.html"],["scholardesk.s3.us-east-1.amazonaws.com/index.html","https://scholardesk.s3.us-east-1.amazonaws.com/index.html"],["scholarnook.s3.amazonaws.com/index.html","https://scholarnook.s3.amazonaws.com/index.html"],["scholarnook.s3.dualstack.us-east-1.amazonaws.com/index.html","https://scholarnook.s3.dualstack.us-east-1.amazonaws.com/index.html"],["scholarnook.s3.us-east-1.amazonaws.com/index.html","https://scholarnook.s3.us-east-1.amazonaws.com/index.html"],["schoolsucks.s3.amazonaws.com/index.html","https://schoolsucks.s3.amazonaws.com/index.html"],["schoolsucks.s3.dualstack.us-east-1.amazonaws.com/index.html","https://schoolsucks.s3.dualstack.us-east-1.amazonaws.com/index.html"],["schoolsucks.s3.us-east-1.amazonaws.com/index.html","https://schoolsucks.s3.us-east-1.amazonaws.com/index.html"],["solaraos.s3.amazonaws.com/index.html","https://solaraos.s3.amazonaws.com/index.html"],["solaraos.s3.dualstack.us-east-1.amazonaws.com/index.html","https://solaraos.s3.dualstack.us-east-1.amazonaws.com/index.html"],["solaraos.s3.us-east-1.amazonaws.com/index.html","https://solaraos.s3.us-east-1.amazonaws.com/index.html"],["sorana169.s3.amazonaws.com/index.html","https://sorana169.s3.amazonaws.com/index.html"],["sorana169.s3.dualstack.us-east-1.amazonaws.com/index.html","https://sorana169.s3.dualstack.us-east-1.amazonaws.com/index.html"],["sorana169.s3.us-east-1.amazonaws.com/index.html","https://sorana169.s3.us-east-1.amazonaws.com/index.html"],["studypadapp.s3.amazonaws.com/index.html","https://studypadapp.s3.amazonaws.com/index.html"],["studypadapp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://studypadapp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["studypadapp.s3.us-east-1.amazonaws.com/index.html","https://studypadapp.s3.us-east-1.amazonaws.com/index.html"],["tbgn.s3.amazonaws.com/index.html","https://tbgn.s3.amazonaws.com/index.html"],["tbgn.s3.dualstack.us-east-1.amazonaws.com/index.html","https://tbgn.s3.dualstack.us-east-1.amazonaws.com/index.html"],["tbgn.s3.us-east-1.amazonaws.com/index.html","https://tbgn.s3.us-east-1.amazonaws.com/index.html"],["tcgj.s3.amazonaws.com/index.html","https://tcgj.s3.amazonaws.com/index.html"],["tcgj.s3.dualstack.us-east-1.amazonaws.com/index.html","https://tcgj.s3.dualstack.us-east-1.amazonaws.com/index.html"],["tcgj.s3.us-east-1.amazonaws.com/index.html","https://tcgj.s3.us-east-1.amazonaws.com/index.html"],["theplayernation.s3.amazonaws.com/index.html","https://theplayernation.s3.amazonaws.com/index.html"],["theplayernation.s3.dualstack.us-east-1.amazonaws.com/index.html","https://theplayernation.s3.dualstack.us-east-1.amazonaws.com/index.html"],["theplayernation.s3.us-east-1.amazonaws.com/index.html","https://theplayernation.s3.us-east-1.amazonaws.com/index.html"],["ti84.s3.amazonaws.com/index.html","https://ti84.s3.amazonaws.com/index.html"],["ti84.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ti84.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ti84.s3.us-east-1.amazonaws.com/index.html","https://ti84.s3.us-east-1.amazonaws.com/index.html"],["tibo229.s3.amazonaws.com/index.html","https://tibo229.s3.amazonaws.com/index.html"],["tibo229.s3.dualstack.us-east-1.amazonaws.com/index.html","https://tibo229.s3.dualstack.us-east-1.amazonaws.com/index.html"],["tibo229.s3.us-east-1.amazonaws.com/index.html","https://tibo229.s3.us-east-1.amazonaws.com/index.html"],["ticalculatoronline.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ticalculatoronline.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ticalculatoronline.s3.us-east-1.amazonaws.com/index.html","https://ticalculatoronline.s3.us-east-1.amazonaws.com/index.html"],["tiual189.s3.amazonaws.com/index.html","https://tiual189.s3.amazonaws.com/index.html"],["tiual189.s3.dualstack.us-east-1.amazonaws.com/index.html","https://tiual189.s3.dualstack.us-east-1.amazonaws.com/index.html"],["tiual189.s3.us-east-1.amazonaws.com/index.html","https://tiual189.s3.us-east-1.amazonaws.com/index.html"],["translol.s3.amazonaws.com/index.html","https://translol.s3.amazonaws.com/index.html"],["translol.s3.dualstack.us-east-1.amazonaws.com/index.html","https://translol.s3.dualstack.us-east-1.amazonaws.com/index.html"],["translol.s3.us-east-1.amazonaws.com/index.html","https://translol.s3.us-east-1.amazonaws.com/index.html"],["ttbest.s3.amazonaws.com/index.html","https://ttbest.s3.amazonaws.com/index.html"],["ttbest.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ttbest.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ttbest.s3.us-east-1.amazonaws.com/index.html","https://ttbest.s3.us-east-1.amazonaws.com/index.html"],["ulg3.s3.amazonaws.com/index.html","https://ulg3.s3.amazonaws.com/index.html"],["ulg3.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ulg3.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ulg3.s3.us-east-1.amazonaws.com/index.html","https://ulg3.s3.us-east-1.amazonaws.com/index.html"],["usekitedu.s3.amazonaws.com/index.html","https://usekitedu.s3.amazonaws.com/index.html"],["usekitedu.s3.dualstack.us-east-1.amazonaws.com/index.html","https://usekitedu.s3.dualstack.us-east-1.amazonaws.com/index.html"],["usekitedu.s3.us-east-1.amazonaws.com/index.html","https://usekitedu.s3.us-east-1.amazonaws.com/index.html"],["utopiaweb.s3.amazonaws.com/index.html","https://utopiaweb.s3.amazonaws.com/index.html"],["utopiaweb.s3.dualstack.us-east-1.amazonaws.com/index.html","https://utopiaweb.s3.dualstack.us-east-1.amazonaws.com/index.html"],["utopiaweb.s3.us-east-1.amazonaws.com/index.html","https://utopiaweb.s3.us-east-1.amazonaws.com/index.html"],["v3-sportsurgetv-o.s3.amazonaws.com/index.html","https://v3-sportsurgetv-o.s3.amazonaws.com/index.html"],["v3-sportsurgetv-o.s3.dualstack.us-east-1.amazonaws.com/index.html","https://v3-sportsurgetv-o.s3.dualstack.us-east-1.amazonaws.com/index.html"],["v3-sportsurgetv-o.s3.us-east-1.amazonaws.com/index.html","https://v3-sportsurgetv-o.s3.us-east-1.amazonaws.com/index.html"],["vbzatuq.s3.amazonaws.com/index.html","https://vbzatuq.s3.amazonaws.com/index.html"],["vbzatuq.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vbzatuq.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vbzatuq.s3.us-east-1.amazonaws.com/index.html","https://vbzatuq.s3.us-east-1.amazonaws.com/index.html"],["vcsa-yt.s3.amazonaws.com/index.html","https://vcsa-yt.s3.amazonaws.com/index.html"],["vcsa-yt.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vcsa-yt.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vcsa-yt.s3.us-east-1.amazonaws.com/index.html","https://vcsa-yt.s3.us-east-1.amazonaws.com/index.html"],["vcsabestyoutuber.s3.amazonaws.com/index.html","https://vcsabestyoutuber.s3.amazonaws.com/index.html"],["vcsabestyoutuber.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vcsabestyoutuber.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vcsabestyoutuber.s3.us-east-1.amazonaws.com/index.html","https://vcsabestyoutuber.s3.us-east-1.amazonaws.com/index.html"],["vcsagoat.s3.amazonaws.com/index.html","https://vcsagoat.s3.amazonaws.com/index.html"],["vcsagoat.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vcsagoat.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vcsagoat.s3.us-east-1.amazonaws.com/index.html","https://vcsagoat.s3.us-east-1.amazonaws.com/index.html"],["vcsahq.s3.amazonaws.com/index.html","https://vcsahq.s3.amazonaws.com/index.html"],["vcsahq.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vcsahq.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vcsahq.s3.us-east-1.amazonaws.com/index.html","https://vcsahq.s3.us-east-1.amazonaws.com/index.html"],["vcsayt.s3.amazonaws.com/index.html","https://vcsayt.s3.amazonaws.com/index.html"],["vcsayt.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vcsayt.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vcsayt.s3.us-east-1.amazonaws.com/index.html","https://vcsayt.s3.us-east-1.amazonaws.com/index.html"],["vellaa.s3.amazonaws.com/index.html","https://vellaa.s3.amazonaws.com/index.html"],["vellaa.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vellaa.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vellaa.s3.us-east-1.amazonaws.com/index.html","https://vellaa.s3.us-east-1.amazonaws.com/index.html"],["vertexspace.s3.amazonaws.com/index.html","https://vertexspace.s3.amazonaws.com/index.html"],["vertexspace.s3.dualstack.us-east-1.amazonaws.com/index.html","https://vertexspace.s3.dualstack.us-east-1.amazonaws.com/index.html"],["vertexspace.s3.us-east-1.amazonaws.com/index.html","https://vertexspace.s3.us-east-1.amazonaws.com/index.html"],["wcfg.s3.amazonaws.com/index.html","https://wcfg.s3.amazonaws.com/index.html"],["wcfg.s3.dualstack.us-east-1.amazonaws.com/index.html","https://wcfg.s3.dualstack.us-east-1.amazonaws.com/index.html"],["wcfg.s3.us-east-1.amazonaws.com/index.html","https://wcfg.s3.us-east-1.amazonaws.com/index.html"],["x2bm.s3.amazonaws.com/index.html","https://x2bm.s3.amazonaws.com/index.html"],["x2bm.s3.dualstack.us-east-1.amazonaws.com/index.html","https://x2bm.s3.dualstack.us-east-1.amazonaws.com/index.html"],["x2bm.s3.us-east-1.amazonaws.com/index.html","https://x2bm.s3.us-east-1.amazonaws.com/index.html"],["ytvcsa.s3.amazonaws.com/index.html","https://ytvcsa.s3.amazonaws.com/index.html"],["ytvcsa.s3.dualstack.us-east-1.amazonaws.com/index.html","https://ytvcsa.s3.dualstack.us-east-1.amazonaws.com/index.html"],["ytvcsa.s3.us-east-1.amazonaws.com/index.html","https://ytvcsa.s3.us-east-1.amazonaws.com/index.html"],["z4fm.s3.amazonaws.com/index.html","https://z4fm.s3.amazonaws.com/index.html"],["z4fm.s3.dualstack.us-east-1.amazonaws.com/index.html","https://z4fm.s3.dualstack.us-east-1.amazonaws.com/index.html"],["z4fm.s3.us-east-1.amazonaws.com/index.html","https://z4fm.s3.us-east-1.amazonaws.com/index.html"],["zkvp.s3.amazonaws.com/index.html","https://zkvp.s3.amazonaws.com/index.html"],["zkvp.s3.dualstack.us-east-1.amazonaws.com/index.html","https://zkvp.s3.dualstack.us-east-1.amazonaws.com/index.html"],["zkvp.s3.us-east-1.amazonaws.com/index.html","https://zkvp.s3.us-east-1.amazonaws.com/index.html"],["zoinbase.s3.amazonaws.com/index.html","https://zoinbase.s3.amazonaws.com/index.html"],["zoinbase.s3.dualstack.us-east-1.amazonaws.com/index.html","https://zoinbase.s3.dualstack.us-east-1.amazonaws.com/index.html"],["zoinbase.s3.us-east-1.amazonaws.com/index.html","https://zoinbase.s3.us-east-1.amazonaws.com/index.html"],["zoxh.s3.amazonaws.com/index.html","https://zoxh.s3.amazonaws.com/index.html"],["zoxh.s3.dualstack.us-east-1.amazonaws.com/index.html","https://zoxh.s3.dualstack.us-east-1.amazonaws.com/index.html"],["zoxh.s3.us-east-1.amazonaws.com/index.html","https://zoxh.s3.us-east-1.amazonaws.com/index.html"],["d1xprhi2iqpbz6.cloudfront.net/index.html","https://d1xprhi2iqpbz6.cloudfront.net/index.html"],["d283k641vp536n.cloudfront.net/index.html","https://d283k641vp536n.cloudfront.net/index.html"],["d3b80h8dw7pfqm.cloudfront.net/index.html","https://d3b80h8dw7pfqm.cloudfront.net/index.html"],["dt7z8lnu7fv0r.cloudfront.net/index.html","https://dt7z8lnu7fv0r.cloudfront.net/index.html"],["901fde7c.azithromycinc.quest/","https://901fde7c.azithromycinc.quest/"],["950be06c.synthroid.pics/","https://950be06c.synthroid.pics/"],["999hourly.cfd/","https://999hourly.cfd/"],["aerogrid.learnfaster.support/","https://aerogrid.learnfaster.support/"],["apexsphere.learningplatform.reviews/","https://apexsphere.learningplatform.reviews/"],["arcsphere.codingschool.ink/","https://arcsphere.codingschool.ink/"],["astra-education.top/","https://astra-education.top/"],["astrocore.thinkbiglearn.college/","https://astrocore.thinkbiglearn.college/"],["best95trend.com/","https://best95trend.com/"],["broughton-hotel.com/","https://broughton-hotel.com/"],["c55d416c.apweb.quest/","https://c55d416c.apweb.quest/"],["ciphersphere.techforedu.technology/","https://ciphersphere.techforedu.technology/"],["cipherx.todaycdn.boats/","https://cipherx.todaycdn.boats/"],["cybercloud.studyguide.wiki/","https://cybercloud.studyguide.wiki/"],["e.whittierschool.me/","https://e.whittierschool.me/"],["educational-resources.top/","https://educational-resources.top/"],["educationalexplorations.org/","https://educationalexplorations.org/"],["fluxforge.futureskills.mom/","https://fluxforge.futureskills.mom/"],["fluxzone.dailylearn.onl/","https://fluxzone.dailylearn.onl/"],["history.amrservices.uk/","https://history.amrservices.uk/"],["hypergrid.minicdn.rest/","https://hypergrid.minicdn.rest/"],["ixl.putnamcityschools.help/","https://ixl.putnamcityschools.help/"],["kidsclassnest.com/","https://kidsclassnest.com/"],["korona.thewhitedoveschools.org/","https://korona.thewhitedoveschools.org/"],["korona.useawp.cfd/","https://korona.useawp.cfd/"],["lcd.girlspreples.org/","https://lcd.girlspreples.org/"],["neonforge.learnworks.enterprises/","https://neonforge.learnworks.enterprises/"],["neonsphere.learnwith.courses/","https://neonsphere.learnwith.courses/"],["nexushub.mathtutorial.help/","https://nexushub.mathtutorial.help/"],["obtede179.calc247.io/","https://obtede179.calc247.io/"],["phantomx.learneveryday.school/","https://phantomx.learneveryday.school/"],["prismwave.minicdn.store/","https://prismwave.minicdn.store/"],["quantumsync.smartlearning.solutions/","https://quantumsync.smartlearning.solutions/"],["schoology.plumtreeschoolofequitation.co.uk/","https://schoology.plumtreeschoolofequitation.co.uk/"],["science-1023.logan.learningatschool.website/","https://science-1023.logan.learningatschool.website/"],["science-1224.lllogan.website/","https://science-1224.lllogan.website/"],["science-1297.logan.learningatschool.website/","https://science-1297.logan.learningatschool.website/"],["science-4276.logan.dumb.today/","https://science-4276.logan.dumb.today/"],["science-5453.a2zrealty.biz/","https://science-5453.a2zrealty.biz/"],["science-7773.logan.read.boats/","https://science-7773.logan.read.boats/"],["science-7866.derpy.click/","https://science-7866.derpy.click/"],["science-9821.logan.read.beer/","https://science-9821.logan.read.beer/"],["solarzone.freelearntoday.space/","https://solarzone.freelearntoday.space/"],["stalbansepiscopal.com/","https://stalbansepiscopal.com/"],["student-1380.logan.read.beer/","https://student-1380.logan.read.beer/"],["student-3655.logans.projectbyod.com/","https://student-3655.logans.projectbyod.com/"],["student-5551.a2zrealty.biz/","https://student-5551.a2zrealty.biz/"],["studysync.co.uk/","https://studysync.co.uk/"],["theavancehotel.com/","https://theavancehotel.com/"],["themannastore.com/","https://themannastore.com/"],["tungok.nhhc.com.au/","https://tungok.nhhc.com.au/"],["vortexflow.infinitelearn.link/","https://vortexflow.infinitelearn.link/"],["vortexhub.nextgenedu.world/","https://vortexhub.nextgenedu.world/"],["vortexpoint.getfree.email/","https://vortexpoint.getfree.email/"],["wandlyninns.com/","https://wandlyninns.com/"],["zenithgrid.thinkbiglearn.college/","https://zenithgrid.thinkbiglearn.college/"],["zenithwave.learntoinvest.trade/","https://zenithwave.learntoinvest.trade/"],["zenithx.neverstop.study/","https://zenithx.neverstop.study/"]]
+function openOthers() {
+    const modal=document.getElementById("modal");
+    document.getElementById("modalTitle").textContent="✦ OTHERS DIRECTORY ✦";
+    const area=document.getElementById("modalOptions");
+    area.innerHTML="";
+    const search=document.createElement("input");
+    search.className="others-search"; search.type="search"; search.placeholder="⌕ Search websites..."; search.setAttribute("aria-label","Search websites");
+    const count=document.createElement("div"); count.className="others-count";
+    const list=document.createElement("div"); list.className="others-list";
+    area.append(search,count,list);
+    function render(){
+      const q=search.value.trim().toLowerCase(); list.innerHTML="";
+      const matches=otherSites.filter(x=>x[0].toLowerCase().includes(q)||x[1].toLowerCase().includes(q));
+      count.textContent=matches.length+" / "+otherSites.length+" WEBSITES";
+      matches.forEach(x=>{const a=document.createElement("a");a.className="option";a.href=x[1];a.target="_blank";a.rel="noopener noreferrer";a.textContent="↗  "+x[0];list.appendChild(a);});
+      if(!matches.length){const empty=document.createElement("p");empty.textContent="No websites match that search.";empty.style.cssText="text-align:center;color:#aaa;padding:20px";list.appendChild(empty);}
+    }
+    search.addEventListener("input",render); render(); modal.classList.add("active");
+}
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal() {
+
+    document.getElementById("modal").classList.remove("active");
+
+}
+
+document.getElementById("modal").addEventListener("click", function(event) {
+
+    if (event.target === this) {
+        closeModal();
+    }
+
+});
+
 </script>
 
 </body>
